@@ -29,28 +29,77 @@ namespace Phobos {
 
 class ResponseHandler;
 
+/*!
+  JSON-RPC 2.0 handler (server and client)
+  */
 class PHOBOSRPC_EXPORT Peer: public QObject
 {
     Q_OBJECT
 public:
+    /*!
+      Constructs an object with parent object \param parent.
+      */
     Peer(QObject *parent = NULL);
 
 signals:
+    /*!
+      Emitted when a new request message is available.
+      /param handler is the object that you use to send a response.
+      @sa handleMessage
+      */
     void readyRequest(QSharedPointer<Phobos::ResponseHandler> handler);
+    /*!
+      Emitted when the message for your call is available.
+      @sa call
+      */
     void readyRequestMessage(QByteArray json);
 
+    /*!
+      Emitted when the result for your call is available.
+      @sa handleMessage
+      */
     void readyResponse(QVariant result, QVariant id);
+    /*!
+      Emitted when the message for your response is available.
+      @sa ResponseHandler::response ResponseHandler::error
+      */
     void readyResponseMessage(QByteArray json);
 
+    /*!
+      Emitted when a error response message is received.
+      */
     void requestError(int code, QString message, QVariant data);
 
 public slots:
+    /*!
+      It parses \param json and emit the signals to correctly handle the
+      message.
+      Use this method every time that you have a new message to handle.
+      */
     void handleMessage(const QByteArray &json);
+    /*!
+      It handles a request message.
+      @sa handleMessage
+      */
     void handleRequest(const QVariant &json);
+    /*!
+      It handles a response message
+      @sa handleMessage
+      */
     void handleResponse(const QVariant &json);
 
+    /*!
+      Use this method to emit the readyResponseMessage signal.
+      You probably don't want to use this.
+      It's used by the ResponseHandler class.
+      */
     void reply(const QVariant &json);
 
+    /*!
+      Prepares a request message.
+      @return true if \param method, \param params and \param id are valid,
+      according JSON-RPC 2.0 spec.
+      */
     bool call(const QString &method, const QVariant &params, const QVariant &id);
 };
 
