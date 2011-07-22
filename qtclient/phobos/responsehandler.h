@@ -40,16 +40,32 @@ enum class ErrorCode
 
 struct PHOBOSRPC_EXPORT Error
 {
+    /*!
+      @brief Constructs a Error object with \param code error code and
+      \param desc error message.
+      */
     Error(ErrorCode code, QString desc);
+    /*! Constructs a Error object with \param code error code.
+      It'll try to set the error message automatically for standard
+      error codes. If you pass a non-standard error code,
+      ErrorCode::NO_ERROR will be used.
+      */
     Error(ErrorCode code = ErrorCode::NO_ERROR);
     Error(const Error &) = default;
 
-    // generates the JSON object
+    /*! Generates the JSON object.
+      */
     operator QByteArray() const;
-    // generates the QVariant object, which can be parsed into a JSON Object
+    /*! Generates the QVariantMap object.
+      The generated QVariantMap can be parsed into a JSON Object.
+      */
     operator QVariantMap() const;
 
+    /*! Error code.
+      */
     ErrorCode code;
+    /*! Error message.
+      */
     QString desc;
 };
 
