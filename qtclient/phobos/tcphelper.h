@@ -37,7 +37,7 @@ namespace Phobos {
   Using this class you only need to care about handle the rpc requests,
   not the communication layer.
   */
-class TcpHelper : public QObject
+class PHOBOSRPC_EXPORT TcpHelper : public QObject
 {
     Q_OBJECT
 public:
