@@ -20,6 +20,7 @@
 #include "httphelper.h"
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
+#include <qjson/parser.h>
 
 using namespace Phobos;
 
@@ -66,11 +67,19 @@ void HttpHelper::onReadyRequestMessage(const QByteArray &json)
 
 void HttpHelper::replyFinished(QNetworkReply *reply)
 {
-    if (reply->error() == QNetworkReply::NoError) {
-        peer->handleMessage(reply->readAll());
-    } else {
-        emit error(reply->error());
+    reply->deleteLater();
+    QByteArray content = reply->readAll();
+
+    if (reply->error() != QNetworkReply::NoError) {
+        QJson::Parser parser;
+        bool ok;
+        parser.parse(content, &ok);
+
+        if (!ok) {
+            emit error(reply->error());
+            return;
+        }
     }
 
-    reply->deleteLater();
+    peer->handleMessage(content);
 }
