@@ -50,23 +50,31 @@ signals:
     void readyRequest(QSharedPointer<Phobos::ResponseHandler> handler);
     /*!
       Emitted when the message for your call is available.
+      \param json is the message that you need to send to the other
+      peer.
       @sa call
       */
     void readyRequestMessage(QByteArray json);
 
     /*!
       Emitted when the result for your call is available.
+      \param result is the result to your call of id \param id.
       @sa handleMessage
       */
     void readyResponse(QVariant result, QVariant id);
     /*!
       Emitted when the message for your response is available.
+      \param json is the message that you need to send to the other
+      peer.
       @sa ResponseHandler::response ResponseHandler::error
       */
     void readyResponseMessage(QByteArray json);
 
     /*!
       Emitted when a error response message is received.
+      \param code is the error code (see the ErrorCode enum),
+      \param message is a human-readable string, and data is
+      custom data sent by the server.
       */
     void requestError(int code, QString message, QVariant data);
 
