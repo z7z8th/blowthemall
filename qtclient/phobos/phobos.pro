@@ -14,14 +14,16 @@ DEFINES += PHOBOSRPC_LIBRARY
 
 SOURCES += peer.cpp \
     responsehandler.cpp \
-    tcphelper.cpp
+    tcphelper.cpp \
+    httphelper.cpp
 
 HEADERS +=\
     peer.h \
     responsehandler.h \
     error-inl.h \
     phobosrpc_global.h \
-    tcphelper.h
+    tcphelper.h \
+    httphelper.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
