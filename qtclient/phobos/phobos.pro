@@ -1,4 +1,5 @@
 QT       -= gui
+QT       += network
 
 TARGET = phobosrpc
 TEMPLATE = lib
@@ -12,13 +13,15 @@ QMAKE_CXXFLAGS += -std=c++0x
 DEFINES += PHOBOSRPC_LIBRARY
 
 SOURCES += peer.cpp \
-    responsehandler.cpp
+    responsehandler.cpp \
+    tcphelper.cpp
 
 HEADERS +=\
     peer.h \
     responsehandler.h \
     error-inl.h \
-    phobosrpc_global.h
+    phobosrpc_global.h \
+    tcphelper.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN
