@@ -224,11 +224,12 @@ void Peer::handleResponse(const QVariant &json)
 
                 int code = errorObject["code"].toInt();
                 QString message = errorObject["message"].toString();
+                QVariant data = errorObject.contains("data") ? errorObject["data"] :
+                                                               QVariant();
+                QVariant id = errorObject.contains("id") ? errorObject["id"] :
+                                                           QVariant();
 
-                if (errorObject.contains("data"))
-                    emit requestError(code, message, errorObject["data"]);
-                else
-                    emit requestError(code, message, QVariant());
+                emit requestError(code, message, data, id);
             }
         }
     }

@@ -52,8 +52,8 @@ bool TcpHelper::setSocket(QTcpSocket *socket)
 
         connect(peer, SIGNAL(readyResponse(QVariant,QVariant)),
                 this, SIGNAL(readyResponse(QVariant,QVariant)));
-        connect(peer, SIGNAL(requestError(int,QString,QVariant)),
-                this, SIGNAL(requestError(int,QString,QVariant)));
+        connect(peer, SIGNAL(requestError(int,QString,QVariant,QVariant)),
+                this, SIGNAL(requestError(int,QString,QVariant,QVariant)));
         connect(peer,
                 SIGNAL(readyRequest(QSharedPointer<Phobos::ResponseHandler>)),
                 this,

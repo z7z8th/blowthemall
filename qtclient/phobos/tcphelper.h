@@ -65,7 +65,7 @@ signals:
       \param message is a human-readable string, and data is
       custom data sent by the server.
       */
-    void requestError(int code, QString message, QVariant data);
+    void requestError(int code, QString message, QVariant data, QVariant id);
     /*!
       Emitted when a new request message is available.
       /param handler is the object that you use to send a response.

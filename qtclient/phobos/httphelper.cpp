@@ -33,8 +33,8 @@ HttpHelper::HttpHelper(QObject *parent) :
             this, SLOT(onReadyRequestMessage(QByteArray)));
     connect(peer, SIGNAL(readyResponse(QVariant,QVariant)),
             this, SIGNAL(readyResponse(QVariant,QVariant)));
-    connect(peer, SIGNAL(requestError(int,QString,QVariant)),
-            this, SIGNAL(requestError(int,QString,QVariant)));
+    connect(peer, SIGNAL(requestError(int,QString,QVariant,QVariant)),
+            this, SIGNAL(requestError(int,QString,QVariant,QVariant)));
 
     connect(httpClient, SIGNAL(finished(QNetworkReply*)),
             this, SLOT(replyFinished(QNetworkReply*)));
