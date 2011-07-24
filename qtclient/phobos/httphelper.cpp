@@ -20,7 +20,6 @@
 #include "httphelper.h"
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
-#include <QNetworkReply>
 
 using namespace Phobos;
 

@@ -22,9 +22,9 @@
 
 #include "peer.h"
 #include <QUrl>
+#include <QNetworkReply>
 
 class QNetworkAccessManager;
-class QNetworkReply;
 
 namespace Phobos {
 
