@@ -17,8 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
 
-#ifndef RESPONSEHANDLER_H
-#define RESPONSEHANDLER_H
+#ifndef PHOBOS_RESPONSEHANDLER_H
+#define PHOBOS_RESPONSEHANDLER_H
 
 #include "phobosrpc_global.h"
 #include <QVariant>
@@ -175,4 +175,4 @@ private:
 
 } // namespace Phobos
 
-#endif // RESPONSEHANDLER_H
+#endif // PHOBOS_RESPONSEHANDLER_H

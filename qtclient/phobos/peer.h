@@ -17,8 +17,8 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
 
-#ifndef PHOBOSRPC_PEER_H
-#define PHOBOSRPC_PEER_H
+#ifndef PHOBOS_PEER_H
+#define PHOBOS_PEER_H
 
 #include "phobosrpc_global.h"
 #include <QObject>
@@ -113,4 +113,4 @@ public slots:
 
 } // namespace Phobos
 
-#endif // PHOBOSRPC_PEER_H
+#endif // PHOBOS_PEER_H
