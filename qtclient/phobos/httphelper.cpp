@@ -67,6 +67,11 @@ void HttpHelper::onReadyRequestMessage(const QByteArray &json)
 
 void HttpHelper::replyFinished(QNetworkReply *reply)
 {
-    peer->handleMessage(reply->readAll());
+    if (reply->error() == QNetworkReply::NoError) {
+        peer->handleMessage(reply->readAll());
+    } else {
+        emit error(reply->error());
+    }
+
     reply->deleteLater();
 }

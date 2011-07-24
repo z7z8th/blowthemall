@@ -52,6 +52,11 @@ signals:
       */
     void requestError(int code, QString message, QVariant data, QVariant id);
 
+    /*!
+      Emitted when the QNetworkReply object detects an error in processing.
+      */
+    void error(QNetworkReply::NetworkError code);
+
 public slots:
     /*!
       Prepares a request message.
