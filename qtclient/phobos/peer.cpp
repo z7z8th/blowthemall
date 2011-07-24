@@ -210,13 +210,14 @@ void Peer::handleResponse(const QVariant &json)
             if (objectMap.contains("result")) {
                 emit readyResponse(objectMap.value("result"),
                                    objectMap.value("id"));
-            } else if (objectMap.contains("error")) {
-                QVariantMap errorObject;
+            } else if (objectMap.contains("error")
+                       && objectMap.value("error").type() == QVariant::Map) {
+                QVariantMap errorObject = objectMap["error"].toMap();
 
                 if (!errorObject.contains("code")
-                        || errorObject.value("code").type() != QVariant::Int
-                        || errorObject.value("code").type() != QVariant::ULongLong
-                        || errorObject.value("code").type() != QVariant::LongLong
+                        || (errorObject.value("code").type() != QVariant::Int
+                            && errorObject.value("code").type() != QVariant::ULongLong
+                            && errorObject.value("code").type() != QVariant::LongLong)
                         || !errorObject.contains("message")
                         || errorObject.value("message").type() != QVariant::String)
                     continue;
