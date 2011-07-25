@@ -36,6 +36,8 @@ namespace Phobos {
 
   Using this class you only need to care about handle the rpc requests,
   not the communication layer.
+  @warning using this protocol, the maximum size for each message is 65535
+  bytes.
   */
 class PHOBOSRPC_EXPORT TcpHelper : public QObject
 {

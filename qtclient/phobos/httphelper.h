@@ -34,8 +34,14 @@ class PHOBOSRPC_EXPORT HttpHelper : public QObject
 public:
     explicit HttpHelper(QObject *parent = 0);
 
+    /*!
+      @return the current url used in requests.
+      */
     QUrl url() const;
-    void setUrl(const QUrl &m_url);
+    /*! Sets the url to be used in the next requests.
+      \param url is the new url.
+      */
+    void setUrl(const QUrl &url);
 
 signals:
     /*!
