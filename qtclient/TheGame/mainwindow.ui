@@ -36,9 +36,9 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>../../../play2.png</normaloff>
-          <normalon>resource/buttons/play2.png</normalon>../../../play2.png</iconset>
+         <iconset resource="resource.qrc">
+          <normaloff>:/buttons/resource/buttons/play2.png</normaloff>
+          <normalon>:/buttons/resource/buttons/play2.png</normalon>:/buttons/resource/buttons/play2.png</iconset>
         </property>
         <property name="iconSize">
          <size>
