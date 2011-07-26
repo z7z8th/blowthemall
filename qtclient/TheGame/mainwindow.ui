@@ -31,7 +31,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="playButton">
+       <widget class="QPushButton" name="pushButton_2">
         <property name="text">
          <string/>
         </property>
@@ -49,7 +49,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="optionsButton">
+       <widget class="QPushButton" name="pushButton">
         <property name="text">
          <string/>
         </property>
@@ -67,7 +67,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="exitButton">
+       <widget class="QPushButton" name="pushButton_3">
         <property name="text">
          <string/>
         </property>
@@ -101,13 +101,21 @@
     </item>
    </layout>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>462</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuBlow_Them_All_Menu">
+    <property name="title">
+     <string>Blow Them All Menu</string>
+    </property>
+   </widget>
+   <addaction name="menuBlow_Them_All_Menu"/>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
