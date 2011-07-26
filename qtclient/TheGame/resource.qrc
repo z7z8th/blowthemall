@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/backgrounds">
+        <file alias="main-background.png">resource/backgrounds/BlowThemAll_brand.png</file>
+    </qresource>
+    <qresource prefix="/buttons">
+        <file>resource/buttons/play_button.png</file>
+        <file>resource/buttons/play2.png</file>
+        <file>resource/buttons/options.png</file>
+        <file>resource/buttons/exit_button.png</file>
+    </qresource>
+</RCC>
