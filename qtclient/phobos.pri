@@ -4,6 +4,8 @@ CONFIG += link_pkgconfig
 
 PKGCONFIG += QJson
 
+INCLUDEPATH += "$$PWD/phobos"
+
 SOURCES += phobos/peer.cpp \
     phobos/responsehandler.cpp \
     phobos/tcphelper.cpp \
