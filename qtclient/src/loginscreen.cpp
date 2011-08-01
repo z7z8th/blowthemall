@@ -19,6 +19,8 @@
 
 #include "loginscreen.h"
 #include "ui_loginscreen.h"
+#include <QDesktopServices>
+#include <QUrl>
 
 LoginScreen::LoginScreen(QWidget *parent) :
     QWidget(parent),
@@ -30,4 +32,31 @@ LoginScreen::LoginScreen(QWidget *parent) :
 LoginScreen::~LoginScreen()
 {
     delete ui;
+}
+
+void LoginScreen::on_internetRadioButton_toggled(bool checked)
+{
+    if (checked) {
+        ui->anonymousCheckBox->setEnabled(true);
+        on_anonymousCheckBox_toggled(ui->anonymousCheckBox->isChecked());
+    } else {
+        ui->anonymousCheckBox->setEnabled(false);
+        on_anonymousCheckBox_toggled(true); // play anonymously
+    }
+}
+
+void LoginScreen::on_anonymousCheckBox_toggled(bool checked)
+{
+    if (checked) {
+        ui->passwdLineEdit->setEnabled(false);
+        ui->storePasswdCheckBox->setEnabled(false);
+    } else {
+        ui->passwdLineEdit->setEnabled(true);
+        ui->storePasswdCheckBox->setEnabled(true);
+    }
+}
+
+void LoginScreen::on_registerButton_clicked()
+{
+    QDesktopServices::openUrl(QUrl("http://blowthemall.googlecode.com/"));
 }

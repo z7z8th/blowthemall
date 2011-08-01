@@ -34,6 +34,13 @@ public:
     explicit LoginScreen(QWidget *parent = 0);
     ~LoginScreen();
 
+private slots:
+    void on_internetRadioButton_toggled(bool checked);
+
+    void on_anonymousCheckBox_toggled(bool checked);
+
+    void on_registerButton_clicked();
+
 private:
     Ui::LoginScreen *ui;
 };
