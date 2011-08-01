@@ -17,10 +17,21 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
 
-#include <QtGui/QApplication>
 #include "application.h"
+#include "mainwindow.h"
+#include "mainscreen.h"
 
-int main(int argc, char *argv[])
+Application::Application(int &argc, char **argv) :
+    QApplication(argc, argv)
 {
-    return Application(argc, argv).exec();
+    setOrganizationName("bombegman-dev"); // (?)
+    setOrganizationDomain("blowthemall.googlecode.com");
+    setApplicationName("BlowThemAll");
+
+    // mainWindow may need to use the QSettings, so it
+    // can't be initialized before the previous code
+    mainWindow = new MainWindow;
+
+    mainWindow->setCentralWidget(new MainScreen);
+    mainWindow->show();
 }

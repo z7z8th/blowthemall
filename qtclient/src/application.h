@@ -17,10 +17,21 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
 
-#include <QtGui/QApplication>
-#include "application.h"
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
-int main(int argc, char *argv[])
+#include <QApplication>
+
+class MainWindow;
+
+class Application : public QApplication
 {
-    return Application(argc, argv).exec();
-}
+    Q_OBJECT
+public:
+    explicit Application(int &argc, char **argv);
+
+private:
+    MainWindow *mainWindow;
+};
+
+#endif // APPLICATION_H
