@@ -35,3 +35,8 @@ Application::Application(int &argc, char **argv) :
     mainWindow->setCentralWidget(new MainScreen);
     mainWindow->show();
 }
+
+Application::~Application()
+{
+    delete mainWindow;
+}
