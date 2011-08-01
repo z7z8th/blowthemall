@@ -15,7 +15,8 @@ SOURCES += src/main.cpp\
     src/aboutscreen.cpp \
     src/trackerscreen.cpp \
     src/charactersettingsscreen.cpp \
-    src/application.cpp
+    src/application.cpp \
+    src/gamescene.cpp
 
 HEADERS  += src/mainwindow.h \
     src/mainscreen.h \
@@ -24,7 +25,8 @@ HEADERS  += src/mainwindow.h \
     src/aboutscreen.h \
     src/trackerscreen.h \
     src/charactersettingsscreen.h \
-    src/application.h
+    src/application.h \
+    src/gamescene.h
 
 FORMS    += ui/mainwindow.ui \
     ui/mainscreen.ui \
