@@ -31,3 +31,18 @@ MainScreen::~MainScreen()
 {
     delete ui;
 }
+
+void MainScreen::on_playButton_clicked()
+{
+    emit playRequest();
+}
+
+void MainScreen::on_settingsButton_clicked()
+{
+    emit settingsRequest();
+}
+
+void MainScreen::on_quitButton_clicked()
+{
+    emit quitRequest();
+}

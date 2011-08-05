@@ -34,7 +34,12 @@ public:
     explicit LoginScreen(QWidget *parent = 0);
     ~LoginScreen();
 
+signals:
+    void backRequest();
+
 private slots:
+    void on_backButton_clicked();
+
     void on_internetRadioButton_toggled(bool checked);
 
     void on_anonymousCheckBox_toggled(bool checked);

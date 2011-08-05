@@ -31,6 +31,11 @@ public:
     explicit Application(int &argc, char **argv);
     ~Application();
 
+private slots:
+    void showMainScreen();
+    void showLoginScreen();
+    void showSettingsScreen();
+
 private:
     MainWindow *mainWindow;
 };

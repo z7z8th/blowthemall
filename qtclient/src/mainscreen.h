@@ -34,6 +34,18 @@ public:
     explicit MainScreen(QWidget *parent = 0);
     ~MainScreen();
 
+signals:
+    void playRequest();
+    void settingsRequest();
+    void quitRequest();
+
+private slots:
+    void on_playButton_clicked();
+
+    void on_settingsButton_clicked();
+
+    void on_quitButton_clicked();
+
 private:
     Ui::MainScreen *ui;
 };

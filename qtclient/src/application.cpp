@@ -20,6 +20,8 @@
 #include "application.h"
 #include "mainwindow.h"
 #include "mainscreen.h"
+#include "loginscreen.h"
+#include "settingsscreen.h"
 
 Application::Application(int &argc, char **argv) :
     QApplication(argc, argv)
@@ -32,11 +34,41 @@ Application::Application(int &argc, char **argv) :
     // can't be initialized before the previous code
     mainWindow = new MainWindow;
 
-    mainWindow->setCentralWidget(new MainScreen);
     mainWindow->show();
+
+    showMainScreen();
 }
 
 Application::~Application()
 {
     delete mainWindow;
+}
+
+void Application::showMainScreen()
+{
+    MainScreen *mainScreen = new MainScreen;
+
+    connect(mainScreen, SIGNAL(playRequest()), this, SLOT(showLoginScreen()));
+    connect(mainScreen, SIGNAL(settingsRequest()), this, SLOT(showSettingsScreen()));
+    connect(mainScreen, SIGNAL(quitRequest()), this, SLOT(quit()));
+
+    mainWindow->setCentralWidget(mainScreen);
+}
+
+void Application::showLoginScreen()
+{
+    LoginScreen *loginScreen = new LoginScreen;
+
+    connect(loginScreen, SIGNAL(backRequest()), this, SLOT(showMainScreen()));
+
+    mainWindow->setCentralWidget(loginScreen);
+}
+
+void Application::showSettingsScreen()
+{
+    SettingsScreen *settingsScreen = new SettingsScreen;
+
+    connect(settingsScreen, SIGNAL(backRequest()), this, SLOT(showMainScreen()));
+
+    mainWindow->setCentralWidget(settingsScreen);
 }

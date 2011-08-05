@@ -31,3 +31,8 @@ SettingsScreen::~SettingsScreen()
 {
     delete ui;
 }
+
+void SettingsScreen::on_pushButton_clicked()
+{
+    emit backRequest();
+}

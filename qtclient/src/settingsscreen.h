@@ -34,6 +34,12 @@ public:
     explicit SettingsScreen(QWidget *parent = 0);
     ~SettingsScreen();
 
+signals:
+    void backRequest();
+
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::SettingsScreen *ui;
 };

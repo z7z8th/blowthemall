@@ -34,6 +34,11 @@ LoginScreen::~LoginScreen()
     delete ui;
 }
 
+void LoginScreen::on_backButton_clicked()
+{
+    emit backRequest();
+}
+
 void LoginScreen::on_internetRadioButton_toggled(bool checked)
 {
     if (checked) {
