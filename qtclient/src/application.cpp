@@ -22,6 +22,7 @@
 #include "mainscreen.h"
 #include "loginscreen.h"
 #include "settingsscreen.h"
+#include "aboutscreen.h"
 
 Application::Application(int &argc, char **argv) :
     QApplication(argc, argv)
@@ -50,6 +51,7 @@ void Application::showMainScreen()
 
     connect(mainScreen, SIGNAL(playRequest()), this, SLOT(showLoginScreen()));
     connect(mainScreen, SIGNAL(settingsRequest()), this, SLOT(showSettingsScreen()));
+    connect(mainScreen, SIGNAL(aboutRequest()), this, SLOT(showAboutScreen()));
     connect(mainScreen, SIGNAL(quitRequest()), this, SLOT(quit()));
 
     mainWindow->setCentralWidget(mainScreen);
@@ -71,4 +73,13 @@ void Application::showSettingsScreen()
     connect(settingsScreen, SIGNAL(backRequest()), this, SLOT(showMainScreen()));
 
     mainWindow->setCentralWidget(settingsScreen);
+}
+
+void Application::showAboutScreen()
+{
+    AboutScreen *aboutScreen = new AboutScreen;
+
+    connect(aboutScreen, SIGNAL(backRequest()), this, SLOT(showMainScreen()));
+
+    mainWindow->setCentralWidget(aboutScreen);
 }

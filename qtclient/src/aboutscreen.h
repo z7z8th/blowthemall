@@ -34,6 +34,12 @@ public:
     explicit AboutScreen(QWidget *parent = 0);
     ~AboutScreen();
 
+signals:
+    void backRequest();
+
+private slots:
+    void on_backButton_clicked();
+
 private:
     Ui::AboutScreen *ui;
 };

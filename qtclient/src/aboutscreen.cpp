@@ -31,3 +31,8 @@ AboutScreen::~AboutScreen()
 {
     delete ui;
 }
+
+void AboutScreen::on_backButton_clicked()
+{
+    emit backRequest();
+}

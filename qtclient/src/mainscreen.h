@@ -37,12 +37,15 @@ public:
 signals:
     void playRequest();
     void settingsRequest();
+    void aboutRequest();
     void quitRequest();
 
 private slots:
     void on_playButton_clicked();
 
     void on_settingsButton_clicked();
+
+    void on_aboutButton_clicked();
 
     void on_quitButton_clicked();
 

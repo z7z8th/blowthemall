@@ -42,6 +42,11 @@ void MainScreen::on_settingsButton_clicked()
     emit settingsRequest();
 }
 
+void MainScreen::on_aboutButton_clicked()
+{
+    emit aboutRequest();
+}
+
 void MainScreen::on_quitButton_clicked()
 {
     emit quitRequest();
