@@ -36,6 +36,11 @@ public:
 
 signals:
     void backRequest();
+    void playRequest();
+
+public:
+    QString username();
+    QString password();
 
 private slots:
     void on_backButton_clicked();
@@ -45,6 +50,8 @@ private slots:
     void on_anonymousCheckBox_toggled(bool checked);
 
     void on_registerButton_clicked();
+
+    void on_playButton_clicked();
 
 private:
     Ui::LoginScreen *ui;

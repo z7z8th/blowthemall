@@ -34,6 +34,16 @@ LoginScreen::~LoginScreen()
     delete ui;
 }
 
+QString LoginScreen::username()
+{
+    return ui->nicknameLineEdit->text();
+}
+
+QString LoginScreen::password()
+{
+    return ui->passwdLineEdit->text();
+}
+
 void LoginScreen::on_backButton_clicked()
 {
     emit backRequest();
@@ -64,4 +74,9 @@ void LoginScreen::on_anonymousCheckBox_toggled(bool checked)
 void LoginScreen::on_registerButton_clicked()
 {
     QDesktopServices::openUrl(QUrl("http://blowthemall.googlecode.com/"));
+}
+
+void LoginScreen::on_playButton_clicked()
+{
+    emit playRequest();
 }
