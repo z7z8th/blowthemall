@@ -34,6 +34,11 @@ LoginScreen::~LoginScreen()
     delete ui;
 }
 
+bool LoginScreen::isLanGame()
+{
+    return ui->lanRadioButton->isChecked();
+}
+
 QString LoginScreen::username()
 {
     return ui->nicknameLineEdit->text();

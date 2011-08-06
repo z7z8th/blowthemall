@@ -20,9 +20,12 @@
 #include "trackerscreen.h"
 #include "ui_trackerscreen.h"
 
-TrackerScreen::TrackerScreen(QWidget *parent) :
+TrackerScreen::TrackerScreen(const QString &username, const QString &passwd,
+                             QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TrackerScreen)
+    ui(new Ui::TrackerScreen),
+    username(username),
+    passwd(passwd)
 {
     ui->setupUi(this);
 }
@@ -30,4 +33,9 @@ TrackerScreen::TrackerScreen(QWidget *parent) :
 TrackerScreen::~TrackerScreen()
 {
     delete ui;
+}
+
+void TrackerScreen::on_backButton_clicked()
+{
+    emit backRequest();
 }

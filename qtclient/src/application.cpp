@@ -23,6 +23,7 @@
 #include "loginscreen.h"
 #include "settingsscreen.h"
 #include "aboutscreen.h"
+#include "trackerscreen.h"
 
 Application::Application(int &argc, char **argv) :
     QApplication(argc, argv)
@@ -62,6 +63,7 @@ void Application::showLoginScreen()
     LoginScreen *loginScreen = new LoginScreen;
 
     connect(loginScreen, SIGNAL(backRequest()), this, SLOT(showMainScreen()));
+    connect(loginScreen, SIGNAL(playRequest()), this, SLOT(showRoomListScreen()));
 
     mainWindow->setCentralWidget(loginScreen);
 }
@@ -82,4 +84,26 @@ void Application::showAboutScreen()
     connect(aboutScreen, SIGNAL(backRequest()), this, SLOT(showMainScreen()));
 
     mainWindow->setCentralWidget(aboutScreen);
+}
+
+void Application::showRoomListScreen()
+{
+    QWidget *w = mainWindow->centralWidget();
+
+    LoginScreen *loginScreen = dynamic_cast<LoginScreen *>(w);
+
+    if (!loginScreen)
+        return;
+
+    if (loginScreen->isLanGame()) {
+        // TODO
+    } else {
+        TrackerScreen *trackerScreen = new TrackerScreen(loginScreen->username(),
+                                                         loginScreen->password());
+
+        connect(trackerScreen, SIGNAL(backRequest()),
+                this, SLOT(showLoginScreen()));
+
+        mainWindow->setCentralWidget(trackerScreen);
+    }
 }

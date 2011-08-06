@@ -31,11 +31,20 @@ class TrackerScreen : public QWidget
     Q_OBJECT
 
 public:
-    explicit TrackerScreen(QWidget *parent = 0);
+    explicit TrackerScreen(const QString &username, const QString &passwd,
+                           QWidget *parent = 0);
     ~TrackerScreen();
+
+signals:
+    void backRequest();
+
+private slots:
+    void on_backButton_clicked();
 
 private:
     Ui::TrackerScreen *ui;
+    QString username;
+    QString passwd;
 };
 
 #endif // TRACKERSCREEN_H

@@ -39,6 +39,7 @@ signals:
     void playRequest();
 
 public:
+    bool isLanGame();
     QString username();
     QString password();
 

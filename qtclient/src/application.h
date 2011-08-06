@@ -37,6 +37,8 @@ private slots:
     void showSettingsScreen();
     void showAboutScreen();
 
+    void showRoomListScreen();
+
 private:
     MainWindow *mainWindow;
 };
