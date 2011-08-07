@@ -1,42 +1,54 @@
-var PUBLISH_TIMEOUT = 10;
-var ALT_URLS = {};
-var FRIENDS = [];
+var settings = {
+    publishTimeout: 10,
+    altUrls: {},
+    altTrackers: [],
+    supportedGames: []
+}
 
-function publish(gameId, portNumber)
+function publish(gameId, port, options, rpc)
+{
+    dbKey = rpc.httpRequest.connection.remoteAddress + ',' + port;
+}
+
+function unpublish(port, rpc)
+{
+    dbKey = rpc.httpRequest.connection.remoteAddress + ',' + port;
+}
+
+function publishTimeout(rpc)
+{
+    rpc.response(settings.publishTimeout);
+}
+
+function listFirst(gameId, options, rpc)
 {
 }
 
-function unpublish(port)
+function list(gameId, options, offset, rpc)
 {
 }
 
-function publishTimeout()
+function verify(address, port, rpc)
 {
-    rpc.response(PUBLISH_TIMEOUT);
+    dbKey = address + ',' + port;
 }
 
-function listFirst(gameId)
+function altUrls(rpc)
 {
+    rpc.response(settings.altUrls);
 }
 
-function list(gameId, offset)
+function altTrackers(rpc)
 {
+    rpc.response(settings.altTrackers);
 }
 
-function verify(address, port)
+function supportedGames(rpc)
 {
+    rpc.response(settings.supportedGames);
 }
 
-function altUrls()
-{
-    rpc.response(ALT_URLS);
-}
-
-function friends()
-{
-    rpc.response(FRIENDS);
-}
-
+exports.settings = settings;
 exports.publish = publish;
 exports.unpublish = unpublish;
 exports.publishTimeout = publishTimeout;
@@ -44,4 +56,5 @@ exports.listFirst = listFirst;
 exports.list = list;
 exports.verify = verify;
 exports.altUrls = altUrls;
-exports.friends = friends;
+exports.altTrackers = altTrackers;
+exports.supportedGames = supportedGames;
