@@ -92,7 +92,7 @@ void TcpHelper::onReadyRead()
         goto STATE_WAITING_FOR_CONTENT;
 
     STATE_UNKNOW_SIZE:
-    if (buffer.size() >= sizeof(nextMessageSize)) {
+    if (buffer.size() >= int(sizeof(nextMessageSize))) {
         QDataStream stream(&buffer, QIODevice::ReadWrite);
         stream >> nextMessageSize;
         buffer.remove(0, 2);
