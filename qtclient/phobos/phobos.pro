@@ -16,7 +16,8 @@ SOURCES += peer.cpp \
     responsehandler.cpp \
     tcphelper.cpp \
     httphelper.cpp \
-    procedure.cpp
+    procedure.cpp \
+    server.cpp
 
 HEADERS +=\
     peer.h \
@@ -26,7 +27,8 @@ HEADERS +=\
     tcphelper.h \
     httphelper.h \
     procedure.h \
-    utils.h
+    utils.h \
+    server.h
 
 symbian {
     MMP_RULES += EXPORTUNFROZEN

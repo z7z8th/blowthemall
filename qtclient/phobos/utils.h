@@ -21,6 +21,8 @@
 #define PHOBOSUTILS_H
 
 #include <QVariant>
+#include <QMetaMethod>
+#include <QVector>
 
 namespace Phobos {
 
@@ -142,6 +144,174 @@ inline QVariantList createParams(const QVariant &arg0, const QVariant &arg1,
     READY_PARAMS:
     return params;
 }
+
+inline QString methodNameFromSignature(const char *signature)
+{
+    QString methodName = QString::fromLocal8Bit(signature);
+    int i = methodName.indexOf('(');
+    return methodName.left(i);
+}
+
+inline QVariant convertToMostCommon(QVariant variant)
+{
+    switch (variant.type()) {
+    case QVariant::UInt:
+    case QVariant::LongLong:
+    case QVariant::ULongLong:
+        variant.convert(QVariant::Int);
+    default:
+        break;
+    }
+    return variant;
+}
+
+inline int indexOfMethod(const QMetaObject *metaObject,
+                         const QString &methodName, const QVariantList &params)
+{
+    for (int i = 0;i < metaObject->methodCount();++i) {
+        QMetaMethod m = metaObject->method(i);
+
+        if (methodName != methodNameFromSignature(m.signature()))
+            continue;
+
+        QList<QByteArray> parameterTypes = m.parameterTypes();
+
+        if (params.size() != parameterTypes.size())
+            continue;
+
+        bool paramsOk = true;
+        for (int j = 0;j < params.size();++j) {
+            if (convertToMostCommon(params[j]).typeName()
+                    != parameterTypes[j]) {
+                paramsOk = false;
+                break;
+            }
+        }
+
+        if (paramsOk)
+            return i;
+    }
+
+    return -1;
+}
+
+class ArgumentsHandler
+{
+public:
+    QVector<QGenericArgument> convert(const QVariantList &params)
+    {
+        QVector<QGenericArgument> args(10);
+
+        for (int i = 0;i < params.size();++i) {
+            QVariant variant = convertToMostCommon(params[0]);
+            const void *data;
+
+            switch (variant.type()) {
+            case QVariant::String:
+                stringBuffer[i] = variant.toString();
+                data = &stringBuffer[i];
+                break;
+            case QVariant::Int:
+                intBuffer[i] = variant.toInt();
+                data = &intBuffer[i];
+                break;
+            case QVariant::Double:
+                doubleBuffer[i] = variant.toDouble();
+                data = &doubleBuffer[i];
+                break;
+            case QVariant::Map:
+                mapBuffer[i] = variant.toMap();
+                data = &mapBuffer[i];
+                break;
+            case QVariant::List:
+                listBuffer[i] = variant.toList();
+                data = &listBuffer[i];
+                break;
+            case QVariant::Bool:
+                boolBuffer[i] = variant.toBool();
+                data = &boolBuffer[i];
+                break;
+            default:
+                // This should never happen, because all possible JSON values
+                // have been mapped in the previous code
+                continue;
+            }
+
+            args[i] = QGenericArgument(variant.typeName(), data);
+        }
+
+        return args;
+    }
+
+private:
+    QMap<int, QString> stringBuffer;
+    QMap<int, int> intBuffer;
+    QMap<int, double> doubleBuffer;
+    QMap<int, QVariantMap> mapBuffer;
+    QMap<int, QVariantList> listBuffer;
+    QMap<int, bool> boolBuffer;
+};
+
+class ReturnHandler
+{
+public:
+    QGenericReturnArgument convert(const QByteArray &typeName)
+    {
+        QGenericReturnArgument ret;
+
+        if (typeName == "QString") {
+            ret = Q_RETURN_ARG(QString, stringBuffer);
+            used = QVariant::String;
+        } else if (typeName == "int") {
+            ret = Q_RETURN_ARG(int, intBuffer);
+            used = QVariant::Int;
+        } else if (typeName == "double") {
+            ret = Q_RETURN_ARG(double, doubleBuffer);
+            used = QVariant::Double;
+        } else if (typeName == "QVariantMap") {
+            ret = Q_RETURN_ARG(QVariantMap, mapBuffer);
+            used = QVariant::Map;
+        } else if (typeName == "QVariantList") {
+            ret = Q_RETURN_ARG(QVariantList, listBuffer);
+            used = QVariant::List;
+        } else if (typeName == "bool") {
+            ret = Q_RETURN_ARG(bool, boolBuffer);
+            used = QVariant::Bool;
+        }
+
+        return ret;
+    }
+
+    operator QVariant ()
+    {
+        switch (used) {
+        case QVariant::String:
+            return stringBuffer;
+        case QVariant::Int:
+            return intBuffer;
+        case QVariant::Double:
+            return doubleBuffer;
+        case QVariant::Map:
+            return mapBuffer;
+        case QVariant::List:
+            return listBuffer;
+        case QVariant::Bool:
+            return boolBuffer;
+        default:
+            return QVariant();
+        }
+    }
+
+private:
+    QString stringBuffer;
+    int intBuffer;
+    double doubleBuffer;
+    QVariantMap mapBuffer;
+    QVariantList listBuffer;
+    bool boolBuffer;
+
+    QVariant::Type used;
+};
 
 } // namespace Phobos
 
