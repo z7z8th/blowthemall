@@ -33,6 +33,9 @@ class PHOBOSRPC_EXPORT Procedure : public QObject
 public:
     explicit Procedure(const QString &method, QObject *parent = 0);
 
+    bool connectToObject(QObject *object);
+    void disconnectFromObject(QObject *object);
+
 signals:
     void readyCall(QString method, QVariant params, QVariant id);
 

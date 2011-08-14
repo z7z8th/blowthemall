@@ -29,6 +29,34 @@ Procedure::Procedure(const QString &method, QObject *parent) :
 {
 }
 
+bool Procedure::connectToObject(QObject *object)
+{
+    bool ok;
+
+    ok = connect(this, SIGNAL(readyCall(QString,QVariant,QVariant)),
+                 object, SLOT(call(QString,QVariant,QVariant)));
+
+    if (!ok)
+        return false;
+
+    ok = connect(object, SIGNAL(readyResponse(QVariant,QVariant)),
+                 this, SLOT(onReadyResponse(QVariant,QVariant)));
+
+    if (!ok)
+        disconnect(this, SIGNAL(readyCall(QString,QVariant,QVariant)),
+                   object, SLOT(call(QString,QVariant,QVariant)));
+
+    return ok;
+}
+
+void Phobos::Procedure::disconnectFromObject(QObject *object)
+{
+    disconnect(this, SIGNAL(readyCall(QString,QVariant,QVariant)),
+               object, SLOT(call(QString,QVariant,QVariant)));
+    disconnect(object, SIGNAL(readyResponse(QVariant,QVariant)),
+               this, SLOT(onReadyResponse(QVariant,QVariant)));
+}
+
 Procedure & Procedure::operator ()(const QVariant &arg0, const QVariant &arg1,
                                    const QVariant &arg2, const QVariant &arg3,
                                    const QVariant &arg4, const QVariant &arg5,
