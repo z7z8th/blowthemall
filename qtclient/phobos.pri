@@ -10,7 +10,7 @@ SOURCES += phobos/peer.cpp \
     phobos/responsehandler.cpp \
     phobos/tcphelper.cpp \
     phobos/httphelper.cpp \
-    procedure.cpp
+    phobos/procedure.cpp
 
 HEADERS += phobos/phobosrpc_global.h\
     phobos/peer.h \
@@ -18,5 +18,5 @@ HEADERS += phobos/phobosrpc_global.h\
     phobos/error-inl.h \
     phobos/tcphelper.h \
     phobos/httphelper.h \
-    procedure.h \
-    utils.h
+    phobos/procedure.h \
+    phobos/utils.h
