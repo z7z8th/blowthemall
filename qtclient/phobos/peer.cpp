@@ -22,66 +22,10 @@
 #include <qjson/parser.h>
 #include <qjson/serializer.h>
 #include "responsehandler.h"
+#include "utils.h"
 
 using namespace std;
 using namespace Phobos;
-
-inline bool isRequestMessage(const QVariantMap &object)
-{
-    if (object.contains("method"))
-        return true;
-    else
-        return false;
-}
-
-inline bool isRequestMessage(const QVariantList &objectList)
-{
-    if (objectList.size())
-        return true;
-    else
-        return false;
-}
-
-inline bool isRequestMessage(const QVariant &object)
-{
-    switch (object.type()) {
-    case QVariant::Map:
-        return isRequestMessage(object.toMap());
-    case QVariant::List:
-        return isRequestMessage(object.toList());
-    default:
-        return false;
-    }
-}
-
-inline bool isResponseMessage(const QVariantMap &object)
-{
-    if (object.contains("result")
-            || object.contains("error"))
-        return true;
-    else
-        return false;
-}
-
-inline bool isResponseMessage(const QVariantList &objectList)
-{
-    if (objectList.size())
-        return true;
-    else
-        return false;
-}
-
-inline bool isResponseMessage(const QVariant &object)
-{
-    switch (object.type()) {
-    case QVariant::Map:
-        return isResponseMessage(object.toMap());
-    case QVariant::List:
-        return isResponseMessage(object.toList());
-    default:
-        return false;
-    }
-}
 
 Peer::Peer(QObject *parent) :
     QObject(parent)
