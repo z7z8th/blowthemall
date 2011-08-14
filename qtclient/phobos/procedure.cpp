@@ -40,7 +40,7 @@ bool Procedure::connectToObject(QObject *object)
         return false;
 
     ok = connect(object, SIGNAL(readyResponse(QVariant,QVariant)),
-                 this, SLOT(onReadyResponse(QVariant,QVariant)));
+                 this, SLOT(response(QVariant,QVariant)));
 
     if (!ok)
         disconnect(this, SIGNAL(readyCall(QString,QVariant,QVariant)),
@@ -54,7 +54,7 @@ void Phobos::Procedure::disconnectFromObject(QObject *object)
     disconnect(this, SIGNAL(readyCall(QString,QVariant,QVariant)),
                object, SLOT(call(QString,QVariant,QVariant)));
     disconnect(object, SIGNAL(readyResponse(QVariant,QVariant)),
-               this, SLOT(onReadyResponse(QVariant,QVariant)));
+               this, SLOT(response(QVariant,QVariant)));
 }
 
 Procedure & Procedure::operator ()(const QVariant &arg0, const QVariant &arg1,
@@ -81,7 +81,7 @@ void Procedure::call(const QVariant &arg0, const QVariant &arg1,
     usedIds.insert(id);
 }
 
-void Procedure::onReadyResponse(const QVariant &result, const QVariant &id)
+void Procedure::response(const QVariant &result, const QVariant &id)
 {
     if (usedIds.contains(id.toString())) {
         emit this->result(result);

@@ -65,7 +65,7 @@ public slots:
               const QVariant &arg8 = QVariant(),
               const QVariant &arg9 = QVariant());
 
-    void onReadyResponse(const QVariant &result, const QVariant &id);
+    void response(const QVariant &result, const QVariant &id);
 
 private:
     QString m_method;
