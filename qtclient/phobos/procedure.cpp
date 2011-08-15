@@ -33,18 +33,47 @@ bool Procedure::connectToObject(QObject *object)
 {
     bool ok;
 
+    // con1
     ok = connect(this, SIGNAL(readyCall(QString,QVariant,QVariant)),
                  object, SLOT(call(QString,QVariant,QVariant)));
 
     if (!ok)
-        return false;
+        goto end;
 
+
+    // con2
     ok = connect(object, SIGNAL(readyResponse(QVariant,QVariant)),
-                 this, SLOT(response(QVariant,QVariant)));
+                 this, SLOT(onReadyResponse(QVariant,QVariant)));
 
     if (!ok)
+        goto con2_failed;
+
+
+    // con3
+    ok = connect(object, SIGNAL(requestError(int,QString,QVariant,QVariant)),
+                 this, SLOT(onRequestError(int,QString,QVariant,QVariant)));
+
+    if (!ok)
+        goto con3_failed;
+    else
+        goto end;
+
+
+    // error handling
+    con3_failed:
+    {
+        disconnect(object, SIGNAL(readyResponse(QVariant,QVariant)),
+                   this, SLOT(onReadyResponse(QVariant,QVariant)));
+    }
+
+    con2_failed:
+    {
         disconnect(this, SIGNAL(readyCall(QString,QVariant,QVariant)),
                    object, SLOT(call(QString,QVariant,QVariant)));
+    }
+
+    end:
+
 
     return ok;
 }
@@ -54,7 +83,7 @@ void Phobos::Procedure::disconnectFromObject(QObject *object)
     disconnect(this, SIGNAL(readyCall(QString,QVariant,QVariant)),
                object, SLOT(call(QString,QVariant,QVariant)));
     disconnect(object, SIGNAL(readyResponse(QVariant,QVariant)),
-               this, SLOT(response(QVariant,QVariant)));
+               this, SLOT(onReadyResponse(QVariant,QVariant)));
 }
 
 Procedure & Procedure::operator ()(const QVariant &arg0, const QVariant &arg1,
@@ -81,10 +110,19 @@ void Procedure::call(const QVariant &arg0, const QVariant &arg1,
     usedIds.insert(id);
 }
 
-void Procedure::response(const QVariant &result, const QVariant &id)
+void Procedure::onReadyResponse(const QVariant &result, const QVariant &id)
 {
     if (usedIds.contains(id.toString())) {
         emit this->result(result);
+        usedIds.remove(id.toString());
+    }
+}
+
+void Phobos::Procedure::onRequestError(int code, const QString &message,
+                                       const QVariant &data, const QVariant &id)
+{
+    if (usedIds.contains(id.toString())) {
+        emit error(code, message, data);
         usedIds.remove(id.toString());
     }
 }

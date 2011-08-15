@@ -40,6 +40,7 @@ signals:
     void readyCall(QString method, QVariant params, QVariant id);
 
     void result(QVariant);
+    void error(int code, QString message, QVariant data);
 
 public:
     Procedure & operator ()(const QVariant &arg0 = QVariant(),
@@ -65,7 +66,9 @@ public slots:
               const QVariant &arg8 = QVariant(),
               const QVariant &arg9 = QVariant());
 
-    void response(const QVariant &result, const QVariant &id);
+    void onReadyResponse(const QVariant &result, const QVariant &id);
+    void onRequestError(int code, const QString &message, const QVariant &data,
+                        const QVariant &id);
 
 private:
     QString m_method;
