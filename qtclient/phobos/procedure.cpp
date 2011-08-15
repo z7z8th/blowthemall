@@ -84,6 +84,8 @@ void Phobos::Procedure::disconnectFromObject(QObject *object)
                object, SLOT(call(QString,QVariant,QVariant)));
     disconnect(object, SIGNAL(readyResponse(QVariant,QVariant)),
                this, SLOT(onReadyResponse(QVariant,QVariant)));
+    disconnect(object, SIGNAL(requestError(int,QString,QVariant,QVariant)),
+               this, SLOT(onRequestError(int,QString,QVariant,QVariant)));
 }
 
 Procedure & Procedure::operator ()(const QVariant &arg0, const QVariant &arg1,
