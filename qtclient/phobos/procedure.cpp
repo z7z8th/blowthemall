@@ -31,35 +31,22 @@ Procedure::Procedure(const QString &method, QObject *parent) :
 
 bool Procedure::connectToObject(QObject *object)
 {
-    bool ok;
+    if (!connect(this, SIGNAL(readyCall(QString,QVariant,QVariant)),
+                 object, SLOT(call(QString,QVariant,QVariant))))
+        goto con1_failed;
 
-    // con1
-    ok = connect(this, SIGNAL(readyCall(QString,QVariant,QVariant)),
-                 object, SLOT(call(QString,QVariant,QVariant)));
-
-    if (!ok)
-        goto end;
-
-
-    // con2
-    ok = connect(object, SIGNAL(readyResponse(QVariant,QVariant)),
-                 this, SLOT(onReadyResponse(QVariant,QVariant)));
-
-    if (!ok)
+    if (!connect(object, SIGNAL(readyResponse(QVariant,QVariant)),
+                 this, SLOT(onReadyResponse(QVariant,QVariant))))
         goto con2_failed;
 
-
-    // con3
-    ok = connect(object, SIGNAL(requestError(int,QString,QVariant,QVariant)),
-                 this, SLOT(onRequestError(int,QString,QVariant,QVariant)));
-
-    if (!ok)
+    if (!connect(object, SIGNAL(requestError(int,QString,QVariant,QVariant)),
+                 this, SLOT(onRequestError(int,QString,QVariant,QVariant))))
         goto con3_failed;
-    else
-        goto end;
 
 
-    // error handling
+    goto success;
+
+
     con3_failed:
     {
         disconnect(object, SIGNAL(readyResponse(QVariant,QVariant)),
@@ -72,10 +59,11 @@ bool Procedure::connectToObject(QObject *object)
                    object, SLOT(call(QString,QVariant,QVariant)));
     }
 
-    end:
+    con1_failed:
+    return false;
 
-
-    return ok;
+    success:
+    return true;
 }
 
 void Phobos::Procedure::disconnectFromObject(QObject *object)
