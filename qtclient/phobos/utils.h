@@ -166,10 +166,16 @@ inline QVariant convertToMostCommon(QVariant variant)
 }
 
 inline int indexOfMethod(const QMetaObject *metaObject,
-                         const QString &methodName, const QVariantList &params)
+                         const QString &methodName,
+                         const QVariantList &params,
+                         bool lookForAllTypes = false)
 {
     for (int i = 0;i < metaObject->methodCount();++i) {
         QMetaMethod m = metaObject->method(i);
+
+        if (!lookForAllTypes
+                && m.methodType() != QMetaMethod::Method)
+            continue;
 
         if (methodName != methodNameFromSignature(m.signature()))
             continue;
