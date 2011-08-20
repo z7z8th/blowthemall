@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui svg
 
 TARGET = blowthemall
 TEMPLATE = app
@@ -8,7 +8,7 @@ QMAKE_CXXFLAGS += -std=c++0x
 include(phobos.pri)
 
 SOURCES += src/main.cpp\
-        src/mainwindow.cpp \
+    src/mainwindow.cpp \
     src/mainscreen.cpp \
     src/loginscreen.cpp \
     src/settingsscreen.cpp \
@@ -16,7 +16,8 @@ SOURCES += src/main.cpp\
     src/trackerscreen.cpp \
     src/charactersettingsscreen.cpp \
     src/application.cpp \
-    src/gamescene.cpp
+    src/gamescene.cpp \
+    src/graphicsiniitem.cpp
 
 HEADERS  += src/mainwindow.h \
     src/mainscreen.h \
@@ -26,7 +27,8 @@ HEADERS  += src/mainwindow.h \
     src/trackerscreen.h \
     src/charactersettingsscreen.h \
     src/application.h \
-    src/gamescene.h
+    src/gamescene.h \
+    src/graphicsiniitem.h
 
 FORMS    += ui/mainwindow.ui \
     ui/mainscreen.ui \
