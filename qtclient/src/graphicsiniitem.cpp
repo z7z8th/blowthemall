@@ -64,6 +64,8 @@ bool GraphicsIniItem::loadState(const QString &state)
             return false;
     }
 
+    emit stateChanged(state);
+
     {
         QString key = stateSectionPrefix + "onFinished";
         if (settings.contains(key))
@@ -77,8 +79,10 @@ bool GraphicsIniItem::loadState(const QString &state)
 
 void GraphicsIniItem::nextFrame()
 {
-    if (!loadFrame(currentFrame + 1))
-        loadState(currentState.onFinished);
+    if (!loadFrame(currentFrame + 1)) {
+        if (!loadState(currentState.onFinished))
+            emit finished();
+    }
 }
 
 bool GraphicsIniItem::loadFrame(int frame)

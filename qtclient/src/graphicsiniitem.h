@@ -33,6 +33,10 @@ class GraphicsIniItem : public QGraphicsSvgItem
 public:
     explicit GraphicsIniItem(const QString &prefix, QGraphicsItem *parent = 0);
 
+signals:
+    void stateChanged(QString);
+    void finished();
+
 public slots:
     bool loadState(const QString &state);
 
