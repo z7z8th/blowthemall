@@ -55,6 +55,9 @@ private slots:
     void on_playButton_clicked();
 
 private:
+    void writeSettings();
+    void readSettings();
+
     Ui::LoginScreen *ui;
 };
 

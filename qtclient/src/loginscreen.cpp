@@ -21,16 +21,20 @@
 #include "ui_loginscreen.h"
 #include <QDesktopServices>
 #include <QUrl>
+#include <QSettings>
+#include <QMessageBox>
 
 LoginScreen::LoginScreen(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LoginScreen)
 {
     ui->setupUi(this);
+    readSettings();
 }
 
 LoginScreen::~LoginScreen()
 {
+    writeSettings();
     delete ui;
 }
 
@@ -83,5 +87,55 @@ void LoginScreen::on_registerButton_clicked()
 
 void LoginScreen::on_playButton_clicked()
 {
+    if (ui->internetRadioButton->isChecked()
+            && ui->passwdLineEdit->text().isEmpty()
+            && !ui->anonymousCheckBox->isChecked()) {
+        QMessageBox::warning(this, tr("Please fill password field"),
+                             tr("Please provide password or"
+                                " play as anonymous"));
+        return;
+    }
+
     emit playRequest();
+}
+
+void LoginScreen::writeSettings()
+{
+    QSettings settings;
+    settings.beginGroup("LoginScreen");
+    settings.setValue("internetRadioButton",
+                      ui->internetRadioButton->isChecked());
+    settings.setValue("nickname", ui->nicknameLineEdit->text());
+    settings.setValue("anonymous", ui->anonymousCheckBox->isChecked());
+    settings.setValue("password",
+                      ui->storePasswdCheckBox->isChecked()
+                      ? ui->passwdLineEdit->text()
+                      : QString());
+}
+
+void LoginScreen::readSettings()
+{
+    QSettings settings;
+    settings.beginGroup("LoginScreen");
+    {
+        bool internetRadioButton = settings.value("internetRadioButton",
+                                                  ui->internetRadioButton
+                                                  ->isChecked()).toBool();
+        if (internetRadioButton)
+            ui->internetRadioButton->setChecked(true);
+        else
+            ui->lanRadioButton->setChecked(true);
+    }
+    ui->nicknameLineEdit->setText(settings.value("nickname").toString());
+    ui->anonymousCheckBox->setChecked(settings.value("anonymous",
+                                                     ui->anonymousCheckBox
+                                                     ->isChecked())
+                                      .toBool());
+    {
+        QString passwd = settings.value("password").toString();
+        if (!passwd.isEmpty()) {
+            ui->storePasswdCheckBox->setChecked(true);
+            ui->passwdLineEdit->setText(passwd);
+        }
+    }
 }
