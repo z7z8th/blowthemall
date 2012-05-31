@@ -1,0 +1,5 @@
+To compile this examples:
+* Add the phobos folder and the phobos.pri file to the target example
+* Edit the .pro project file of the target example, uncommenting the line
+  "include(phobos.pri)"
+* qmake && make && be happy
