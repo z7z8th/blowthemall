@@ -1,11 +1,10 @@
 #include <QtCore/QCoreApplication>
 
-#include <Tufao/HttpServer>
-
 #include <Tufao/HttpServerRequestRouter>
 #include <Tufao/HttpFileServer>
 #include <Tufao/HttpPluginServer>
 
+#include "webserver.h"
 #include "notfound.h"
 #include "pluginreloader.h"
 
@@ -13,7 +12,7 @@ int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(static);
     QCoreApplication a(argc, argv);
-    Tufao::HttpServer server;
+    WebServer server;
 
     Tufao::HttpServerRequestRouter router;
 

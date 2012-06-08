@@ -11,11 +11,15 @@ include(phobos-tufao.pri)
 
 SOURCES += main.cpp \
     notfound.cpp \
-    pluginreloader.cpp
+    pluginreloader.cpp \
+    webserver.cpp \
+    handler.cpp
 
 HEADERS += \
     notfound.h \
-    pluginreloader.h
+    pluginreloader.h \
+    webserver.h \
+    handler.h
 
 RESOURCES += \
     static.qrc
