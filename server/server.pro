@@ -13,13 +13,15 @@ SOURCES += main.cpp \
     notfound.cpp \
     pluginreloader.cpp \
     webserver.cpp \
-    handler.cpp
+    handler.cpp \
+    tracker.cpp
 
 HEADERS += \
     notfound.h \
     pluginreloader.h \
     webserver.h \
-    handler.h
+    handler.h \
+    tracker.h
 
 RESOURCES += \
     static.qrc
