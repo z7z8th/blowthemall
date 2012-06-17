@@ -13,14 +13,14 @@ SOURCES += main.cpp \
     notfound.cpp \
     pluginreloader.cpp \
     webserver.cpp \
-    handler.cpp \
+    trackerhandler.cpp \
     tracker.cpp
 
 HEADERS += \
     notfound.h \
     pluginreloader.h \
     webserver.h \
-    handler.h \
+    trackerhandler.h \
     tracker.h
 
 RESOURCES += \

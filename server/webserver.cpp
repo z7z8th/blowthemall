@@ -1,5 +1,5 @@
 #include "webserver.h"
-#include "handler.h"
+#include "trackerhandler.h"
 
 #include <Tufao/WebSocket>
 #include <Tufao/HttpServerRequest>
@@ -24,7 +24,7 @@ void WebServer::upgrade(Tufao::HttpServerRequest *request,
     }
 
     Tufao::WebSocket *socket = new Tufao::WebSocket(this);
-    Handler *handler = new Handler(socket);
+    TrackerHandler *handler = new TrackerHandler(socket);
     new JsonRpc(handler, socket, socket);
 
     connect(socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));

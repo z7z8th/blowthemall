@@ -1,13 +1,13 @@
-#include "handler.h"
+#include "trackerhandler.h"
 #include "tracker.h"
 
-Handler::Handler(QObject *parent) :
+TrackerHandler::TrackerHandler(QObject *parent) :
     QObject(parent),
     tracker(Tracker::instance())
 {
 }
 
-int Handler::publishTimeout()
+int TrackerHandler::publishTimeout()
 {
     return tracker.publishTimeout();
 }

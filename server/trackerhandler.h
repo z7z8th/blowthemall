@@ -5,11 +5,11 @@
 
 class Tracker;
 
-class Handler : public QObject
+class TrackerHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit Handler(QObject *parent = 0);
+    explicit TrackerHandler(QObject *parent = 0);
 
     Q_INVOKABLE int publishTimeout();
 
