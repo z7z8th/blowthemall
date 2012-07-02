@@ -12,16 +12,12 @@ include(phobos-tufao.pri)
 SOURCES += main.cpp \
     notfound.cpp \
     pluginreloader.cpp \
-    webserver.cpp \
-    trackerhandler.cpp \
-    tracker.cpp
+    webserver.cpp
 
 HEADERS += \
     notfound.h \
     pluginreloader.h \
-    webserver.h \
-    trackerhandler.h \
-    tracker.h
+    webserver.h
 
 RESOURCES += \
     static.qrc

@@ -1,5 +1,4 @@
 #include "webserver.h"
-#include "trackerhandler.h"
 
 #include <Tufao/WebSocket>
 #include <Tufao/HttpServerRequest>
@@ -13,21 +12,10 @@ WebServer::WebServer(QObject *parent) :
 }
 
 void WebServer::upgrade(Tufao::HttpServerRequest *request,
-                        const QByteArray &head)
+                        const QByteArray &)
 {
-    if (Tufao::Url(request->url()).path() != "/tracker") {
-        Tufao::HttpServerResponse response(request->socket(),
-                                           request->responseOptions());
-        response.writeHead(Tufao::HttpServerResponse::NOT_FOUND);
-        response.end("Not found\n");
-        return;
-    }
-
-    Tufao::WebSocket *socket = new Tufao::WebSocket(this);
-    TrackerHandler *handler = new TrackerHandler(socket);
-    new JsonRpc(handler, socket, socket);
-
-    connect(socket, SIGNAL(disconnected()), socket, SLOT(deleteLater()));
-
-    socket->startServerHandshake(request, head);
+    Tufao::HttpServerResponse response(request->socket(),
+                                       request->responseOptions());
+    response.writeHead(Tufao::HttpServerResponse::NOT_FOUND);
+    response.end("Not found\n");
 }
