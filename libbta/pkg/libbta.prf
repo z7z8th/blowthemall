@@ -1,0 +1,9 @@
+QT += network
+
+DEFINES += LIBBTA_VERSION_MAJOR=0
+
+release {
+    LIBS += -llibbta
+} else {
+    LIBS += -llibbtad
+}
