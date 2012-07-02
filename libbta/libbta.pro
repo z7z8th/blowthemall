@@ -41,7 +41,7 @@ INSTALLS = target qmakefile headers
 # Project files
 
 HEADERS += src/libbta_global.h \
-    src/handler.h
+    src/trackerhandler.h
 
 SOURCES += \
-    src/handler.cpp
+    src/trackerhandler.cpp
