@@ -1,7 +1,7 @@
 TARGET = server
 TEMPLATE = app
 
-CONFIG += TUFAO
+CONFIG += TUFAO LIBBTA
 QT -= gui
 
 # Phobos conf
