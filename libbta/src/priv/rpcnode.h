@@ -28,6 +28,20 @@ inline uint qHash(const QVariant &variant)
     return variant.toUInt();
 }
 
+template<class T>
+QVariantMap jsonRpcObject(const QString &remoteMethod, const T &args)
+{
+    QVariantMap object;
+
+    object["jsonrpc"] = "2.0";
+    object["method"] = remoteMethod;
+
+    if (!args.isEmpty())
+        object["params"] = args;
+
+    return object;
+}
+
 namespace libbta {
 namespace Rpc {
 
@@ -43,17 +57,10 @@ struct Node::Priv
             return QVariant();
 
         QVariant id = index++;
-        QVariantMap object;
-
-        object["jsonrpc"] = "2.0";
-        object["method"] = remoteMethod;
+        QVariantMap object = jsonRpcObject(remoteMethod, args);
         object["id"] = id;
 
-        if (!args.isEmpty())
-            object["params"] = args;
-
-        QJson::Serializer serializer;
-        if (!socket->sendMessage(serializer.serialize(object)))
+        if (!socket->sendMessage(QJson::Serializer().serialize(object)))
             return QVariant();
 
         calls[id] = receiver;
@@ -66,16 +73,8 @@ struct Node::Priv
         if (!socket)
             return;
 
-        QVariantMap object;
-
-        object["jsonrpc"] = "2.0";
-        object["method"] = remoteMethod;
-
-        if (!args.isEmpty())
-            object["params"] = args;
-
-        QJson::Serializer serializer;
-        socket->sendMessage(serializer.serialize(object));
+        socket->sendMessage(QJson::Serializer()
+                            .serialize(jsonRpcObject(remoteMethod, args)));
     }
 
     QObject *methods;
