@@ -15,6 +15,8 @@ QT -= gui
 
 # Build info
 
+QMAKE_CXXFLAGS += -std=c++11
+
 DEFINES += LIBBTA_LIBRARY
 DESTDIR = lib
 release {
@@ -41,7 +43,10 @@ INSTALLS = target qmakefile headers
 # Project files
 
 HEADERS += src/libbta_global.h \
-    src/trackerhandler.h
+    src/trackerhandler.h \
+    src/rpcnode.h \
+    src/priv/rpcnode.h
 
 SOURCES += \
-    src/trackerhandler.cpp
+    src/trackerhandler.cpp \
+    src/rpcnode.cpp
