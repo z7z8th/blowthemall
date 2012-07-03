@@ -43,7 +43,7 @@ void Node::setMethods(QObject *object)
     priv->methods = object;
 }
 
-Tufao::AbstractMessageSocket Node::messageSocket()
+Tufao::AbstractMessageSocket *Node::messageSocket()
 {
     return priv->socket;
 }

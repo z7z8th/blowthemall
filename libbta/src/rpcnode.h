@@ -42,7 +42,7 @@ public:
     QObject *methods();
     void setMethods(QObject *object);
 
-    Tufao::AbstractMessageSocket messageSocket();
+    Tufao::AbstractMessageSocket *messageSocket();
     void setMessageSocket(Tufao::AbstractMessageSocket *socket);
 
 signals:
