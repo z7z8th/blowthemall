@@ -21,16 +21,68 @@
 #define LIBBTA_PRIV_RPCNODE_H
 
 #include "../rpcnode.h"
+#include <qjson/serializer.h>
+
+inline uint qHash(const QVariant &variant)
+{
+    return variant.toUInt();
+}
 
 namespace libbta {
 namespace Rpc {
 
 struct Node::Priv
 {
-    Priv() : methods(NULL), socket(NULL) {}
+    Priv() : methods(NULL), socket(NULL), index(0) {}
+
+    template<class T>
+    QVariant callWith(const QString &remoteMethod, const T &args,
+                      std::function<void (QVariant)> receiver)
+    {
+        if (!socket)
+            return QVariant();
+
+        QVariant id = index++;
+        QVariantMap object;
+
+        object["jsonrpc"] = "2.0";
+        object["method"] = remoteMethod;
+        object["id"] = id;
+
+        if (!args.isEmpty())
+            object["params"] = args;
+
+        QJson::Serializer serializer;
+        if (!socket->sendMessage(serializer.serialize(object)))
+            return QVariant();
+
+        calls[id] = receiver;
+        return id;
+    }
+
+    template<class T>
+    void call(const QString &remoteMethod, const T &args)
+    {
+        if (!socket)
+            return;
+
+        QVariantMap object;
+
+        object["jsonrpc"] = "2.0";
+        object["method"] = remoteMethod;
+
+        if (!args.isEmpty())
+            object["params"] = args;
+
+        QJson::Serializer serializer;
+        socket->sendMessage(serializer.serialize(object));
+    }
 
     QObject *methods;
     Tufao::AbstractMessageSocket *socket;
+    uint index;
+
+    QHash<QVariant, std::function<void (QVariant)>> calls;
 };
 
 } // namespace Rpc

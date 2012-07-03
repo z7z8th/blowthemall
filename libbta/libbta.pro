@@ -9,9 +9,10 @@ release {
 TEMPLATE = lib
 VERSION = 0.1
 
-CONFIG += QT
+CONFIG += QT TUFAO link_pkgconfig
 QT += network
 QT -= gui
+PKGCONFIG += QJson
 
 # Build info
 

@@ -50,25 +50,42 @@ Tufao::AbstractMessageSocket *Node::messageSocket()
 
 void Node::setMessageSocket(Tufao::AbstractMessageSocket *socket)
 {
+    if (priv->socket)
+        disconnect(priv->socket, SIGNAL(newMessage(QByteArray)),
+                   this, SLOT(onNewMessage(QByteArray)));
+
     priv->socket = socket;
+
+    if (priv->socket)
+        connect(priv->socket, SIGNAL(newMessage(QByteArray)),
+                this, SLOT(onNewMessage(QByteArray)));
 }
 
 QVariant Node::callWith(const QString &remoteMethod, const QVariantList &args,
                         std::function<void (QVariant)> receiver)
 {
+    return priv->callWith(remoteMethod, args, receiver);
 }
 
 QVariant Node::callWith(const QString &remoteMethod, const QVariantMap &args,
                         std::function<void (QVariant)> receiver)
 {
+    return priv->callWith(remoteMethod, args, receiver);
 }
 
 void Node::call(const QString &remoteMethod, const QVariantList &args)
 {
+    priv->call(remoteMethod, args);
 }
 
 void Node::call(const QString &remoteMethod, const QVariantMap &args)
 {
+    priv->call(remoteMethod, args);
+}
+
+void Node::onNewMessage(const QByteArray &msg)
+{
+    // TODO
 }
 
 } // namespace Rpc

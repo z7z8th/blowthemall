@@ -57,6 +57,9 @@ public slots:
     void call(const QString &remoteMethod, const QVariantList &args);
     void call(const QString &remoteMethod, const QVariantMap &args);
 
+private slots:
+    void onNewMessage(const QByteArray &msg);
+
 private:
     struct Priv;
     Priv *priv;
