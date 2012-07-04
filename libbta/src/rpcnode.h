@@ -58,9 +58,26 @@ public slots:
     void call(const QString &remoteMethod, const QVariantMap &args);
 
 private slots:
-    void onNewMessage(const QByteArray &msg);
+    void handleMessage(const QByteArray &msg);
 
 private:
+    enum Error
+    {
+        NO_ERROR,
+        PARSE_ERROR      = -32700,
+        INVALID_REQUEST  = -32600,
+        METHOD_NOT_FOUND = -32601,
+        INVALID_PARAMS   = -32602,
+        INTERNAL_ERROR   = -32603
+    };
+
+    void handleRequest(const QVariant &object);
+    void handleResponse(const QVariant &object);
+
+    QVariantMap processRequest(const QVariantMap &request);
+    QPair<QVariant, QVariantMap>
+    processReply(const QString &method, const QVariant &args);
+
     struct Priv;
     Priv *priv;
 };

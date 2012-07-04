@@ -21,11 +21,42 @@
 #define LIBBTA_PRIV_RPCNODE_H
 
 #include "../rpcnode.h"
+#include "introspection.h"
+
 #include <qjson/serializer.h>
+#include <QtCore/QVector>
 
 inline uint qHash(const QVariant &variant)
 {
     return variant.toUInt();
+}
+
+inline bool isRequestMessage(const QVariant &object)
+{
+    switch (object.type()) {
+    case QVariant::Map:
+        return object.toMap().contains("method");
+    case QVariant::List:
+        return true;
+    default:
+        return false;
+    }
+}
+
+inline bool isResponseMessage(const QVariant &object)
+{
+    switch (object.type()) {
+    case QVariant::Map:
+    {
+        QVariantMap o = object.toMap();
+        return o.contains("result") || o.contains("error");
+    }
+    case QVariant::List:
+        // Because libbta doesn't create batch requests, batch responses aren't
+        // received.
+    default:
+        return false;
+    }
 }
 
 template<class T>

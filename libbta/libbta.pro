@@ -46,7 +46,8 @@ INSTALLS = target qmakefile headers
 HEADERS += src/libbta_global.h \
     src/trackerhandler.h \
     src/rpcnode.h \
-    src/priv/rpcnode.h
+    src/priv/rpcnode.h \
+    src/priv/introspection.h
 
 SOURCES += \
     src/trackerhandler.cpp \
