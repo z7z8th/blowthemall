@@ -46,7 +46,7 @@ public:
     void setMessageSocket(Tufao::AbstractMessageSocket *socket);
 
 signals:
-    void error(QVariant id, QString data);
+    void error(QVariant id, QByteArray data);
 
 public slots:
     QVariant callWith(const QString &remoteMethod, const QVariantList &args,
@@ -72,7 +72,7 @@ private:
     };
 
     void handleRequest(const QVariant &object);
-    void handleResponse(const QVariant &object);
+    void handleResponse(const QVariantMap &object);
 
     QVariantMap processRequest(const QVariantMap &request);
     QPair<QVariant, QVariantMap>

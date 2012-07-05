@@ -102,7 +102,7 @@ void Node::handleMessage(const QByteArray &msg)
     if (isRequestMessage(object)) {
         handleRequest(object);
     } else if (isResponseMessage(object)) {
-        handleResponse(object);
+        handleResponse(object.toMap());
     } else {
         static QByteArray invalidJsonRpc = "{\"jsonrpc\": \"2.0\", \"error\": "
                 "{\"code\": -32600, \"message\": \"Invalid JSON-RPC.\"}, "
@@ -143,9 +143,26 @@ inline void Node::handleRequest(const QVariant &object)
     }
 }
 
-inline void Node::handleResponse(const QVariant &object)
+inline void Node::handleResponse(const QVariantMap &object)
 {
-    // TODO
+    if (!object.contains("id"))
+        return;
+
+    if (object.contains("error")) {
+        QVariant error = object["error"];
+        if (error.type() != QVariant::Map)
+            return;
+
+        emit this->error(object["id"], QJson::Serializer().serialize(error));
+        return;
+    }
+
+    QVariant key = object["id"];
+    if (!object.contains("result") || !priv->calls.contains(key))
+        return;
+
+    priv->calls[key](object["result"]);
+    priv->calls.remove(key);
 }
 
 QVariantMap Node::processRequest(const QVariantMap &request)
