@@ -4,8 +4,6 @@
 #include <Tufao/HttpServerRequest>
 #include <Tufao/Url>
 
-#include "phobos-tufao/jsonrpc.h"
-
 WebServer::WebServer(QObject *parent) :
     Tufao::HttpServer(parent)
 {
