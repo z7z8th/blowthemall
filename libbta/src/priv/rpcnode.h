@@ -78,8 +78,6 @@ namespace Rpc {
 
 struct Node::Priv
 {
-    Priv() : methods(NULL), socket(NULL), index(0) {}
-
     template<class T>
     QVariant callWith(const QString &remoteMethod, const T &args,
                       std::function<void (QVariant)> receiver)
@@ -108,9 +106,9 @@ struct Node::Priv
                             .serialize(jsonRpcObject(remoteMethod, args)));
     }
 
-    QObject *methods;
-    Tufao::AbstractMessageSocket *socket;
-    uint index;
+    QObject *methods = NULL;
+    Tufao::AbstractMessageSocket *socket = NULL;
+    uint index = 0;
 
     QHash<QVariant, std::function<void (QVariant)>> calls;
 };
