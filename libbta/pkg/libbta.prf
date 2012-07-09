@@ -1,4 +1,4 @@
-QT += network
+QT += network declarative svg
 
 DEFINES += LIBBTA_VERSION_MAJOR=0
 

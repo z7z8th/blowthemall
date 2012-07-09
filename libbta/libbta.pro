@@ -10,7 +10,7 @@ TEMPLATE = lib
 VERSION = 0.1
 
 CONFIG += QT TUFAO link_pkgconfig
-QT += network
+QT += network declarative svg
 QT -= gui
 PKGCONFIG += QJson
 
@@ -47,8 +47,14 @@ HEADERS += src/libbta_global.h \
     src/trackerhandler.h \
     src/rpcnode.h \
     src/priv/rpcnode.h \
-    src/priv/introspection.h
+    src/priv/introspection.h \
+    src/gii.h \
+    src/giiitem.h \
+    src/giistate.h
 
 SOURCES += \
     src/trackerhandler.cpp \
-    src/rpcnode.cpp
+    src/rpcnode.cpp \
+    src/gii.cpp \
+    src/giiitem.cpp \
+    src/giistate.cpp
