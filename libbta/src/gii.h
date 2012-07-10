@@ -20,10 +20,15 @@
 #ifndef LIBBTA_GII_GII_H
 #define LIBBTA_GII_GII_H
 
-#include <QObject>
+#include <QtCore/QObject>
+#include <QtCore/QHash>
+
+#include "giistate.h"
 
 namespace libbta {
 namespace Gii {
+
+typedef QHash<QString, State*> States;
 
 class Gii : public QObject
 {
@@ -32,26 +37,48 @@ class Gii : public QObject
                READ defaultState
                WRITE setDefaultState
                NOTIFY defaultStateChanged)
-    Q_PROPERTY(QObjectList states
+    Q_PROPERTY(States states
                READ states
                WRITE setStates
                NOTIFY statesChanged)
+
+    Q_PROPERTY(State* currentState
+               READ currentState
+               NOTIFY currentStateChanged)
+    Q_PROPERTY(QString currentStateString
+               READ currentStateString
+               NOTIFY currentStateChanged)
 public:
     explicit Gii(QObject *parent = 0);
+    ~Gii();
 
     QString defaultState();
     void setDefaultState(const QString &state);
 
-    QObjectList states();
-    void setStates(const QObjectList &state);
+    States states();
+    void setStates(const States &states);
+
+    State *currentState();
+    QString currentStateString();
+
+    Q_INVOKABLE void save(const QString &file);
+    Q_INVOKABLE bool load(const QString &file);
 
 signals:
     void defaultStateChanged();
     void statesChanged();
+
+    void currentStateChanged();
     
 public slots:
-    void save(const QString &file);
-    void load(const QString &file);
+    void loadState(const QString &state);
+
+private slots:
+    void onStateFinished();
+
+private:
+    struct Priv;
+    Priv *priv;
 };
 
 } // namespace Gii

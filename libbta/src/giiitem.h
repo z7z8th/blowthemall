@@ -25,6 +25,8 @@
 namespace libbta {
 namespace Gii {
 
+class State;
+
 class Item : public QDeclarativeItem
 {
     Q_OBJECT
@@ -34,17 +36,31 @@ class Item : public QDeclarativeItem
                NOTIFY fileChanged)
 public:
     explicit Item(QDeclarativeItem *parent = 0);
+    ~Item();
 
     QString file();
     void setFile(const QString &file);
+
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+               QWidget *);
 
     static void registerType();
     
 signals:
     void fileChanged();
-    
+
 public slots:
-    
+    void loadState(const QString &state);
+
+private slots:
+    void onFrameChanged();
+    void onStateChanged();
+
+private:
+    void updateState(State *state);
+
+    struct Priv;
+    Priv *priv;
 };
 
 } // namespace Gii

@@ -50,7 +50,10 @@ HEADERS += src/libbta_global.h \
     src/priv/introspection.h \
     src/gii.h \
     src/giiitem.h \
-    src/giistate.h
+    src/giistate.h \
+    src/priv/giiitem.h \
+    src/priv/gii.h \
+    src/priv/giistate.h
 
 SOURCES += \
     src/trackerhandler.cpp \

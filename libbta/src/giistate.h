@@ -43,6 +43,7 @@ class State : public QObject
                NOTIFY onFinishedChanged)
 public:
     explicit State(QObject *parent = 0);
+    ~State();
 
     int period();
     void setPeriod(int period);
@@ -53,10 +54,26 @@ public:
     QString onFinished();
     void setOnFinished(const QString &onFinished);
 
+    QString currentFrame();
+
 signals:
     void periodChanged();
     void seqChanged();
     void onFinishedChanged();
+
+    void currentFrameChanged();
+    void finished();
+
+public slots:
+    void start();
+    void stop();
+
+private slots:
+    void onTimeout();
+
+private:
+    struct Priv;
+    Priv *priv;
 };
 
 } // namespace Gii

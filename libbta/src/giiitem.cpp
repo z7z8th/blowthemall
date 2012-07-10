@@ -17,21 +17,93 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
 
-#include "giiitem.h"
+#include "priv/giiitem.h"
 #include <QtDeclarative/QtDeclarative>
+#include <QtSvg/QSvgRenderer>
+#include <QtCore/QDebug>
 
 namespace libbta {
 namespace Gii {
 
 Item::Item(QDeclarativeItem *parent) :
-    QDeclarativeItem(parent)
+    QDeclarativeItem(parent),
+    priv(new Priv)
 {
     setFlag(QGraphicsItem::ItemHasNoContents, false);
+
+    connect(&priv->gii, SIGNAL(currentStateChanged()),
+            this, SLOT(onStateChanged()));
+}
+
+Item::~Item()
+{
+    delete priv;
+}
+
+QString Item::file()
+{
+    return priv->file;
+}
+
+void Item::setFile(const QString &file)
+{
+    if (file == priv->file)
+        return;
+
+    priv->gii.load(file);
+    priv->file = file;
+
+    updateState(priv->gii.currentState());
+    emit fileChanged();
 }
 
 void Item::registerType()
 {
-    qmlRegisterType<Item>("Gii", 0, 1, "GiiItem");
+    // Not libbta version, but Gii spec version
+    qmlRegisterType<Item>("Gii", 1, 0, "GiiItem");
+}
+
+void Item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                 QWidget *)
+{
+    if (!priv->currentState)
+        return;
+
+    painter->save();
+    QSvgRenderer(priv->currentState->currentFrame())
+            .render(painter, option->rect);
+    painter->restore();
+}
+
+void Item::updateState(State *state)
+{
+    if (priv->currentState) {
+        disconnect(priv->currentState, SIGNAL(currentFrameChanged()),
+                   this, SLOT(onFrameChanged()));
+    }
+
+    priv->currentState = priv->gii.currentState();
+
+    if (state)
+        connect(state, SIGNAL(currentFrameChanged()),
+                this, SLOT(onFrameChanged()));
+
+    update();
+}
+
+void Item::onFrameChanged()
+{
+    update();
+}
+
+void Item::onStateChanged()
+{
+    updateState(priv->gii.currentState());
+}
+
+void Item::loadState(const QString &state)
+{
+    priv->gii.loadState(state);
 }
 
 } // namespace Gii
