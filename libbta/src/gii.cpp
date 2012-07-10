@@ -18,10 +18,14 @@
   */
 
 #include "priv/gii.h"
+#include "priv/rcc.h"
 
 #include <QtCore/QResource>
 #include <QtCore/QFileInfo>
 #include <QtCore/QSettings>
+#include <QtCore/QTemporaryFile>
+#include <QtCore/QXmlStreamWriter>
+#include <QtCore/QSharedPointer>
 
 namespace libbta {
 namespace Gii {
@@ -81,8 +85,93 @@ QString Gii::currentStateString()
     return priv->currentState;
 }
 
-void Gii::save(const QString &file)
+bool Gii::save(const QString &file)
 {
+    if (!Rcc::hasCompiler())
+        return false;
+
+    QTemporaryFile metaDataFile;
+    QStringList resources;
+    if (!metaDataFile.open())
+        return false;
+
+    {
+        QSettings settings(metaDataFile.fileName(), QSettings::IniFormat);
+
+        settings.setValue("version", "1.0");
+        settings.setValue("defaultState", defaultState());
+
+        for (States::iterator i = priv->states.begin()
+             ;i != priv->states.end();++i) {
+            QString state = "state." + i.key();
+
+            settings.beginGroup(state);
+            {
+                QStringList seq = i.value()->seq();
+                for (QString &r: seq) {
+                    if (!resources.contains(r))
+                        resources.append(r);
+
+                    r = QFileInfo(r).fileName();
+                }
+
+                settings.setValue("period", i.value()->period());
+                settings.setValue("seq", i.value()->seq());
+                settings.setValue("onFinished", i.value()->onFinished());
+            }
+            settings.endGroup(); // state
+        }
+    }
+
+    QTemporaryFile qrcFile;
+    QList<QSharedPointer<QTemporaryFile>> copies;
+    if (!qrcFile.open())
+        return false;
+
+    {
+        QXmlStreamWriter xml(&qrcFile);
+        xml.writeDTD("<!DOCTYPE RCC>");
+        xml.writeStartElement("RCC");
+        xml.writeAttribute("version", "1.0");
+        xml.writeStartElement("qresource");
+
+        xml.writeStartElement("file");
+        xml.writeAttribute("alias", "index.ini");
+        xml.writeCharacters(metaDataFile.fileName());
+        xml.writeEndElement(); // "file"
+
+        for (QString r: resources) {
+            xml.writeStartElement("file");
+            xml.writeAttribute("alias", QFileInfo(r).fileName());
+
+            if (r.startsWith(":/")) {
+                copies.push_back(QSharedPointer<QTemporaryFile>
+                                 (new QTemporaryFile));
+                if (!copies.back()->open())
+                    return false;
+
+                QFile::copy(r, copies.back()->fileName());
+
+                xml.writeCharacters(copies.back()->fileName());
+                xml.writeEndElement(); // "file"
+                continue;
+            }
+
+            xml.writeCharacters(r);
+            xml.writeEndElement(); // "file"
+        }
+
+        xml.writeEndElement(); // "qresource"
+        xml.writeEndElement(); // "RCC"
+    }
+
+    if (!qrcFile.flush())
+        return false;
+
+    if (!Rcc::compile(qrcFile.fileName(), file))
+        return false;
+
+    return true;
 }
 
 bool Gii::load(const QString &file)
@@ -120,7 +209,7 @@ bool Gii::load(const QString &file)
 
             states[stateName] = state;
         }
-        settings.endGroup();
+        settings.endGroup(); // state
     }
 
     setStates(states);

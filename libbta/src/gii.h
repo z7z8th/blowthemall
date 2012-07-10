@@ -61,7 +61,7 @@ public:
     State *currentState();
     QString currentStateString();
 
-    Q_INVOKABLE void save(const QString &file);
+    Q_INVOKABLE bool save(const QString &file);
     Q_INVOKABLE bool load(const QString &file);
 
 signals:
