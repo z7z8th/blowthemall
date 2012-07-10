@@ -53,11 +53,13 @@ HEADERS += src/libbta_global.h \
     src/giistate.h \
     src/priv/giiitem.h \
     src/priv/gii.h \
-    src/priv/giistate.h
+    src/priv/giistate.h \
+    src/priv/rcc.h
 
 SOURCES += \
     src/trackerhandler.cpp \
     src/rpcnode.cpp \
     src/gii.cpp \
     src/giiitem.cpp \
-    src/giistate.cpp
+    src/giistate.cpp \
+    src/priv/rcc.cpp
