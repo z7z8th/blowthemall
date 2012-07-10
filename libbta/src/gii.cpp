@@ -23,12 +23,6 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QSettings>
 
-
-
-
-#include <QtCore/QDir>
-#include <QtCore/QDebug>
-
 namespace libbta {
 namespace Gii {
 

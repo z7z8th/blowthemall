@@ -20,7 +20,6 @@
 #include "priv/giiitem.h"
 #include <QtDeclarative/QtDeclarative>
 #include <QtSvg/QSvgRenderer>
-#include <QtCore/QDebug>
 
 namespace libbta {
 namespace Gii {
