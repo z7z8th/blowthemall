@@ -20,13 +20,15 @@
 #ifndef LIBBTA_GII_GIISTATE_H
 #define LIBBTA_GII_GIISTATE_H
 
+#include "libbta_global.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
 
 namespace libbta {
 namespace Gii {
 
-class State : public QObject
+class LIBBTA_EXPORT State : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int period

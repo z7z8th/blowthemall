@@ -17,26 +17,28 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
 
-#ifndef LIBBTA_GII_ITEM_H
-#define LIBBTA_GII_ITEM_H
+#ifndef LIBBTA_GIIITEM_H
+#define LIBBTA_GIIITEM_H
 
 #include <QtDeclarative/QDeclarativeItem>
 
 namespace libbta {
 namespace Gii {
-
 class State;
+} // namespace Gii
+} // namespace libbta
 
-class Item : public QDeclarativeItem
+class GiiItem : public QDeclarativeItem
 {
     Q_OBJECT
+    Q_DISABLE_COPY(GiiItem)
     Q_PROPERTY(QString file
                READ file
                WRITE setFile
                NOTIFY fileChanged)
 public:
-    explicit Item(QDeclarativeItem *parent = 0);
-    ~Item();
+    explicit GiiItem(QDeclarativeItem *parent = 0);
+    ~GiiItem();
 
     QString file();
     void setFile(const QString &file);
@@ -44,8 +46,6 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *);
 
-    static void registerType();
-    
 signals:
     void fileChanged();
 
@@ -57,13 +57,12 @@ private slots:
     void onStateChanged();
 
 private:
-    void updateState(State *state);
+    void updateState(libbta::Gii::State *state);
 
     struct Priv;
     Priv *priv;
 };
 
-} // namespace Gii
-} // namespace libbta
+QML_DECLARE_TYPE(GiiItem)
 
-#endif // LIBBTA_GII_ITEM_H
+#endif // LIBBTA_GIIITEM_H

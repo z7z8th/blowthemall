@@ -21,10 +21,7 @@
 #include <QtDeclarative/QtDeclarative>
 #include <QtSvg/QSvgRenderer>
 
-namespace libbta {
-namespace Gii {
-
-Item::Item(QDeclarativeItem *parent) :
+GiiItem::GiiItem(QDeclarativeItem *parent) :
     QDeclarativeItem(parent),
     priv(new Priv)
 {
@@ -34,17 +31,17 @@ Item::Item(QDeclarativeItem *parent) :
             this, SLOT(onStateChanged()));
 }
 
-Item::~Item()
+GiiItem::~GiiItem()
 {
     delete priv;
 }
 
-QString Item::file()
+QString GiiItem::file()
 {
     return priv->file;
 }
 
-void Item::setFile(const QString &file)
+void GiiItem::setFile(const QString &file)
 {
     if (file == priv->file)
         return;
@@ -56,13 +53,7 @@ void Item::setFile(const QString &file)
     emit fileChanged();
 }
 
-void Item::registerType()
-{
-    // Not libbta version, but Gii spec version
-    qmlRegisterType<Item>("Gii", 1, 0, "GiiItem");
-}
-
-void Item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void GiiItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                  QWidget *)
 {
     if (!priv->currentState)
@@ -74,7 +65,7 @@ void Item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->restore();
 }
 
-void Item::updateState(State *state)
+inline void GiiItem::updateState(libbta::Gii::State *state)
 {
     if (priv->currentState) {
         disconnect(priv->currentState, SIGNAL(currentFrameChanged()),
@@ -90,20 +81,17 @@ void Item::updateState(State *state)
     update();
 }
 
-void Item::onFrameChanged()
+void GiiItem::onFrameChanged()
 {
     update();
 }
 
-void Item::onStateChanged()
+void GiiItem::onStateChanged()
 {
     updateState(priv->gii.currentState());
 }
 
-void Item::loadState(const QString &state)
+void GiiItem::loadState(const QString &state)
 {
     priv->gii.loadState(state);
 }
-
-} // namespace Gii
-} // namespace libbta

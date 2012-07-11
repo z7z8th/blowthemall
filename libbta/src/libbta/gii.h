@@ -20,17 +20,15 @@
 #ifndef LIBBTA_GII_GII_H
 #define LIBBTA_GII_GII_H
 
-#include <QtCore/QObject>
-#include <QtCore/QHash>
-
 #include "giistate.h"
+#include <QtCore/QHash>
 
 namespace libbta {
 namespace Gii {
 
 typedef QHash<QString, State*> States;
 
-class Gii : public QObject
+class LIBBTA_EXPORT Gii : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString defaultState
