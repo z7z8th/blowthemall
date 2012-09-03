@@ -1,4 +1,3 @@
 TEMPLATE = subdirs
 
-SUBDIRS += projects/libbta.pro \
-    projects/qmlplugin.pro
+SUBDIRS += src/libbta.pro

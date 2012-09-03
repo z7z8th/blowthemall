@@ -21,7 +21,10 @@
 #include <QtDeclarative/QtDeclarative>
 #include <QtSvg/QSvgRenderer>
 
-GiiItem::GiiItem(QDeclarativeItem *parent) :
+namespace libbta {
+namespace Gii {
+
+Item::Item(QDeclarativeItem *parent) :
     QDeclarativeItem(parent),
     priv(new Priv)
 {
@@ -31,17 +34,17 @@ GiiItem::GiiItem(QDeclarativeItem *parent) :
             this, SLOT(onStateChanged()));
 }
 
-GiiItem::~GiiItem()
+Item::~Item()
 {
     delete priv;
 }
 
-QString GiiItem::file()
+QString Item::file()
 {
     return priv->file;
 }
 
-void GiiItem::setFile(const QString &file)
+void Item::setFile(const QString &file)
 {
     if (file == priv->file)
         return;
@@ -53,7 +56,7 @@ void GiiItem::setFile(const QString &file)
     emit fileChanged();
 }
 
-void GiiItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+void Item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                  QWidget *)
 {
     if (!priv->currentState)
@@ -65,7 +68,12 @@ void GiiItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->restore();
 }
 
-inline void GiiItem::updateState(libbta::Gii::State *state)
+int Item::registerType()
+{
+    return qmlRegisterType<Item>("org.blowthemall.gii", 1, 0, "GiiItem");
+}
+
+inline void Item::updateState(State *state)
 {
     if (priv->currentState) {
         disconnect(priv->currentState, SIGNAL(currentFrameChanged()),
@@ -78,20 +86,29 @@ inline void GiiItem::updateState(libbta::Gii::State *state)
         connect(state, SIGNAL(currentFrameChanged()),
                 this, SLOT(onFrameChanged()));
 
-    update();
+//    update();
+    QGraphicsScene *scene = QGraphicsItem::scene();
+    if (scene)
+        scene->update();
 }
 
-void GiiItem::onFrameChanged()
+void Item::onFrameChanged()
 {
-    update();
+//    update();
+    QGraphicsScene *scene = QGraphicsItem::scene();
+    if (scene)
+        scene->update();
 }
 
-void GiiItem::onStateChanged()
+void Item::onStateChanged()
 {
     updateState(priv->gii.currentState());
 }
 
-void GiiItem::loadState(const QString &state)
+void Item::loadState(const QString &state)
 {
     priv->gii.loadState(state);
 }
+
+} // namespace Gii
+} // namespace libbta

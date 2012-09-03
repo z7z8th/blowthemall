@@ -24,27 +24,32 @@
 
 namespace libbta {
 namespace Gii {
-class State;
-} // namespace Gii
-} // namespace libbta
 
-class GiiItem : public QDeclarativeItem
+class State;
+
+class Item : public QDeclarativeItem
 {
     Q_OBJECT
-    Q_DISABLE_COPY(GiiItem)
+    Q_DISABLE_COPY(Item)
     Q_PROPERTY(QString file
                READ file
                WRITE setFile
                NOTIFY fileChanged)
 public:
-    explicit GiiItem(QDeclarativeItem *parent = 0);
-    ~GiiItem();
+    explicit Item(QDeclarativeItem *parent = 0);
+    ~Item();
 
     QString file();
     void setFile(const QString &file);
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *);
+
+    /*!
+     * It will register the GiiItem in the uri "org.blowthemall.gii", under the
+     * "GiiItem" qml name.
+     */
+    static int registerType();
 
 signals:
     void fileChanged();
@@ -57,12 +62,15 @@ private slots:
     void onStateChanged();
 
 private:
-    void updateState(libbta::Gii::State *state);
+    void updateState(State *state);
 
     struct Priv;
     Priv *priv;
 };
 
-QML_DECLARE_TYPE(GiiItem)
+} // namespace Gii
+} // namespace libbta
+
+QML_DECLARE_TYPE(libbta::Gii::Item)
 
 #endif // LIBBTA_GIIITEM_H

@@ -21,14 +21,20 @@
 #define LIBBTA_PRIV_GIIITEM_H
 
 #include "../giiitem.h"
-#include "../../libbta/gii.h"
+#include "../gii.h"
 
-struct GiiItem::Priv
+namespace libbta {
+namespace Gii {
+
+struct Item::Priv
 {
     QString file;
 
-    libbta::Gii::Gii gii;
-    libbta::Gii::State *currentState = NULL;
+    Gii gii;
+    State *currentState = NULL;
 };
+
+} // namespace Gii
+} // namespace libbta
 
 #endif // LIBBTA_PRIV_GIIITEM_H
