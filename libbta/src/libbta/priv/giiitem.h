@@ -28,8 +28,6 @@ namespace Gii {
 
 struct Item::Priv
 {
-    QString file;
-
     Gii gii;
     State *currentState = NULL;
 };

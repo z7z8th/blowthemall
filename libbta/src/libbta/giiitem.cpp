@@ -39,21 +39,9 @@ Item::~Item()
     delete priv;
 }
 
-QString Item::file()
+Gii &Item::gii()
 {
-    return priv->file;
-}
-
-void Item::setFile(const QString &file)
-{
-    if (file == priv->file)
-        return;
-
-    priv->gii.load(file);
-    priv->file = file;
-
-    updateState(priv->gii.currentState());
-    emit fileChanged();
+    return priv->gii;
 }
 
 void Item::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
@@ -102,6 +90,12 @@ void Item::onFrameChanged()
 
 void Item::onStateChanged()
 {
+    updateState(priv->gii.currentState());
+}
+
+void Item::loadFile(const QString &file)
+{
+    priv->gii.load(file);
     updateState(priv->gii.currentState());
 }
 

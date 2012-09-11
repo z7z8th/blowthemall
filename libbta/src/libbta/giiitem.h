@@ -25,22 +25,18 @@
 namespace libbta {
 namespace Gii {
 
+class Gii;
 class State;
 
 class Item : public QDeclarativeItem
 {
     Q_OBJECT
     Q_DISABLE_COPY(Item)
-    Q_PROPERTY(QString file
-               READ file
-               WRITE setFile
-               NOTIFY fileChanged)
 public:
     explicit Item(QDeclarativeItem *parent = 0);
     ~Item();
 
-    QString file();
-    void setFile(const QString &file);
+    Gii &gii();
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *);
@@ -51,10 +47,8 @@ public:
      */
     static int registerType();
 
-signals:
-    void fileChanged();
-
 public slots:
+    void loadFile(const QString &file);
     void loadState(const QString &state);
 
 private slots:
