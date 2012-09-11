@@ -48,7 +48,8 @@ QString Gii::defaultState()
 
 void Gii::setDefaultState(const QString &state)
 {
-    if (state == priv->defaultState || !priv->states.contains(state))
+    if (state == priv->defaultState
+            || (!priv->states.contains(state) && !state.isEmpty()))
         return;
 
     priv->defaultState = state;
@@ -65,11 +66,14 @@ void Gii::setStates(const States &states)
     if (states == priv->states)
         return;
 
-    for (QObject *o: states)
+    priv->states = states;
+    for (QObject *o: priv->states)
         o->setParent(this);
 
-    priv->states = states;
     emit statesChanged();
+
+    if (!defaultState().isEmpty() && !priv->states.contains(defaultState()))
+        setDefaultState(QString());
 }
 
 State *Gii::currentState()
@@ -101,8 +105,7 @@ bool Gii::save(const QString &file)
         settings.setValue("version", "1.0");
         settings.setValue("defaultState", defaultState());
 
-        for (States::iterator i = priv->states.begin()
-             ;i != priv->states.end();++i) {
+        for (auto i(priv->states.begin());i != priv->states.end();++i) {
             QString state = "state." + i.key();
 
             settings.beginGroup(state);
@@ -110,13 +113,13 @@ bool Gii::save(const QString &file)
                 QStringList seq = i.value()->seq();
                 for (QString &r: seq) {
                     if (!resources.contains(r))
-                        resources.append(r);
+                        resources += r;
 
                     r = QFileInfo(r).fileName();
                 }
 
                 settings.setValue("period", i.value()->period());
-                settings.setValue("seq", i.value()->seq());
+                settings.setValue("seq", seq);
                 settings.setValue("onFinished", i.value()->onFinished());
             }
             settings.endGroup(); // state
@@ -145,12 +148,8 @@ bool Gii::save(const QString &file)
             xml.writeAttribute("alias", QFileInfo(r).fileName());
 
             if (r.startsWith(":/")) {
-                copies.push_back(QSharedPointer<QTemporaryFile>
-                                 (new QTemporaryFile));
-                if (!copies.back()->open())
-                    return false;
-
-                QFile::copy(r, copies.back()->fileName());
+                copies += QSharedPointer<QTemporaryFile>
+                        (QTemporaryFile::createLocalFile(r));
 
                 xml.writeCharacters(copies.back()->fileName());
                 xml.writeEndElement(); // "file"
@@ -176,9 +175,14 @@ bool Gii::save(const QString &file)
 
 bool Gii::load(const QString &file)
 {
-    QString fileBaseName = QFileInfo(file).baseName();
-    QString prefix = ":/" + fileBaseName + "/";
-    if (!QResource::registerResource(file, "/" + fileBaseName))
+    clear();
+
+    // stores rcc info for later unregister
+    priv->rccFileName = file;
+    priv->rccMapRoot = "/" + QFileInfo(file).completeBaseName();
+
+    QString prefix = ":" + priv->rccMapRoot + "/";
+    if (!QResource::registerResource(file, priv->rccMapRoot))
         return false;
 
     QSettings settings(prefix + "index.ini", QSettings::IniFormat);
@@ -240,6 +244,18 @@ void Gii::loadState(const QString &state)
 
     if (stateChanged)
         emit currentStateChanged();
+}
+
+void Gii::clear()
+{
+    loadState(QString());
+    setDefaultState(QString());
+    for (auto s: priv->states) s->deleteLater();
+    priv->states.clear();
+
+    QResource::unregisterResource(priv->rccFileName, priv->rccMapRoot);
+    priv->rccFileName.clear();
+    priv->rccMapRoot.clear();
 }
 
 void Gii::onStateFinished()

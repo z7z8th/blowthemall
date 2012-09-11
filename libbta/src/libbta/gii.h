@@ -70,6 +70,7 @@ signals:
     
 public slots:
     void loadState(const QString &state);
+    void clear();
 
 private slots:
     void onStateFinished();

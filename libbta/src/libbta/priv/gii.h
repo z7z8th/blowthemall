@@ -30,6 +30,10 @@ struct Gii::Priv
     QString defaultState;
     States states;
     QString currentState;
+
+    // resource handling
+    QString rccFileName;
+    QString rccMapRoot;
 };
 
 } // namespace Rpc
