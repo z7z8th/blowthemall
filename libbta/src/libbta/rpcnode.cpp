@@ -29,6 +29,12 @@ Node::Node(QObject *parent) :
 {
 }
 
+Node::Node(Tufao::AbstractMessageSocket *socket, QObject *parent) :
+    QObject(parent),
+    priv(new Priv(socket))
+{
+}
+
 Node::~Node()
 {
     delete priv;

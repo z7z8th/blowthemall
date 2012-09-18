@@ -37,6 +37,7 @@ class LIBBTA_EXPORT Node : public QObject
     Q_OBJECT
 public:
     explicit Node(QObject *parent = 0);
+    explicit Node(Tufao::AbstractMessageSocket *socket, QObject *parent = 0);
     ~Node();
 
     QObject *methods();
