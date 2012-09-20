@@ -19,8 +19,6 @@
 
 #include "priv/rpcnode.h"
 #include <qjson/parser.h>
-#include <QDebug>
-#include <iostream>
 
 namespace libbta {
 namespace Rpc {
@@ -178,12 +176,9 @@ inline void Node::handleResponse(const QVariantMap &object)
 
 QVariantMap Node::processRequest(const QVariantMap &request)
 {
-    qDebug() << "Entrou nos debugs !!!! GLoria!!" ;
-	std::cout << "Foi !!! ?\n" << std::endl ;
     QVariantMap reply({{QString("jsonrpc"), QVariant("2.0")}});
 
     if (!request.contains("method")) {
-        qDebug() << "1" ;
         reply["error"] = QVariantMap({{"code", -32600}, {"message", "Invalid Request."}});
         reply["id"] = QVariant();
         return reply;
@@ -192,7 +187,6 @@ QVariantMap Node::processRequest(const QVariantMap &request)
     QVariant method = request["method"];
 
     if (method.type() != QVariant::String) {
-        qDebug() << "2" ;
                 reply["error"] = QVariantMap({{"code", -32600}, {"message", "Invalid Request."}});
                 reply["id"] = QVariant();
                 return reply;
@@ -204,7 +198,6 @@ QVariantMap Node::processRequest(const QVariantMap &request)
         if (paramsType != QVariant::List
                 && paramsType != QVariant::Map
                 && !params.isNull()) {
-        qDebug() << "3" ;
                     reply["error"] = QVariantMap({{"code", -32600}, {"message", "Invalid Request."}});
                     reply["id"] = QVariant();
                     return reply;
@@ -220,7 +213,6 @@ QVariantMap Node::processRequest(const QVariantMap &request)
                 && idType != QVariant::LongLong
                 && idType != QVariant::Double
                 && !id.isNull()) {
-        qDebug() << "4" ;
             reply["error"] = QVariantMap({{"code", -32600}, {"message", "Invalid Request."}});
             reply["id"] = QVariant();
             return reply;
