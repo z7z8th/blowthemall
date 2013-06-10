@@ -29,6 +29,15 @@ Node::Node(QObject *parent) :
 {
 }
 
+Node::Node(Tufao::AbstractMessageSocket *socket, QObject *parent) :
+    QObject(parent),
+    priv(new Priv(socket))
+{
+    if (priv->socket)
+        connect(priv->socket, SIGNAL(newMessage(QByteArray)),
+                this, SLOT(handleMessage(QByteArray)));
+}
+
 Node::~Node()
 {
     delete priv;

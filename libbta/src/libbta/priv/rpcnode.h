@@ -78,6 +78,10 @@ namespace Rpc {
 
 struct Node::Priv
 {
+    Priv(Tufao::AbstractMessageSocket *socket = NULL) :
+        socket(socket)
+    {}
+
     template<class T>
     QVariant callWith(const QString &remoteMethod, const T &args,
                       std::function<void (QVariant)> receiver)
