@@ -177,7 +177,7 @@ QVariantMap Node::processRequest(const QVariantMap &request)
 
     QVariant method = request["method"];
 
-    if (method.type() == QVariant::String) {
+    if (method.type() != QVariant::String) {
                 reply["error"] = QVariantMap({{"code", -32600}, {"message", "Invalid Request."}});
                 reply["id"] = QVariant();
                 return reply;
